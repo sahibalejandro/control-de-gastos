@@ -1,0 +1,205 @@
+#amount_entire,
+#amount_payments,
+#amount_available{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#amount_payments{
+  color: #F50;
+}
+
+/* Le Account
+===================================================================================*/
+.account{
+  border-style: solid;
+  border-color: #EEE;
+  border-width: 0 1px 1px 1px;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+
+.account_header{
+  border-top: 4px solid #CCC;
+  line-height: 30px;
+}
+
+.account_toolbar{
+  float: right;
+  padding: 5px 5px 0 0;
+}
+
+.account_name{
+  font-size: 18px;
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+.account_available,
+.account_total_in,
+.account_total_out{
+  font-weight: bold;
+  display: inline-block;
+  min-width: 100px;
+}
+
+/* Le Movements List (default width 940px)
+===================================================================================*/
+.movements_list_header{
+  border: 1px solid #CCC;
+  border-width: 1px 0;
+  line-height: 25px;
+}
+
+.movement_cell_type,
+.movement_cell_amount,
+.movement_cell_date,
+.movement_cell_concept,
+.movement_cell_delete{
+  float: left;
+  text-align: center;
+  font-size: 10px;
+}
+
+.movement_cell_type{
+  width: 40px;
+}
+
+.movement_cell_amount{
+  width: 100px;
+}
+
+.movement_cell_date{
+  width: 100px;
+}
+
+.movement_cell_concept{
+  width: 188px;
+}
+
+.movement_cell_delete{
+  width: 40px;
+}
+
+.movements_list{
+  height: 209px; /* hasta 10 movimientos, menos el 1px de borde de .movement */
+  overflow: hidden;
+}
+
+.movement{
+  border-bottom: 1px solid #CCC;
+  line-height: 20px;
+}
+
+.movement_btn_type,.movement_btn_delete {
+  border-radius: 2px;
+  line-height: 14px;
+  padding: 0 2px;
+  vertical-align: middle;
+}
+
+
+/* Le Dynamic Inputs
+===================================================================================*/
+input.dynamic_input {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+
+  -webkit-box-shadow: none;
+  box-shadow: none;
+
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+  width: 100%;
+  height: 20px;
+  line-height: 20px !important;
+  vertical-align: baseline;
+  font-size: 10px;
+}
+
+input.dynamic_input:focus {
+  background-color: #EEE;
+  border: none;
+  cursor: text;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+input.dynamic_input.currency{
+  text-align: right;
+}
+
+input.dynamic_input.date{
+  text-align: center;
+}
+
+/* Le Media Queries
+===================================================================================*/
+@media (min-width: 1200px) {
+  .movement_cell_concept{
+    width: 303px;
+  }
+}
+
+@media (max-width: 979px) {
+  .movement_cell_type{
+    width: 50px;
+  }
+
+  .movement_cell_amount{
+    width: 150px;
+  }
+
+  .movement_cell_date{
+    width: 150px;
+  }
+
+  .movement_cell_concept{
+    width: 324px;
+  }
+
+  .movement_cell_delete{
+    width: 50px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .movement_cell_concept{
+    width: 322px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movement_cell_concept{
+    width: 322px;
+  }
+}
+
+@media (max-width: 767px) {
+  .account{
+    width: 100%;
+  }
+  .movement_cell_type{
+    width: 10%;
+  }
+  .movement_cell_amount{
+    width: 20%;
+  }
+  .movement_cell_date{
+    width: 20%;
+  }
+  .movement_cell_concept{
+    width: 30%;
+  }
+  .movement_cell_delete{
+    width: 20%;
+  }
+}
