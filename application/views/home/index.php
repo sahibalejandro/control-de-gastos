@@ -23,6 +23,6 @@ $this
 <div id="accounts" class="clearfix"></div>
 <?php
 $this
-  ->appendJsFiles('lib/dynamic-inputs.js', 'home/index.js')
+  ->appendJsFiles('lib/dynamic-inputs.js', 'lib/accounts-gui.js', 'home/index.js')
   ->renderView('layout/footer.php');
 ?>

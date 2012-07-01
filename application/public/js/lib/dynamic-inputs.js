@@ -1,8 +1,3 @@
-$(document).on('ready', function(e)
-{
-  DynamicInputs.initialize(); 
-});
-
 var DynamicInputs = new (function()
 {
   // Lista de meses para el metodo toDate()
@@ -85,7 +80,7 @@ var DynamicInputs = new (function()
             $Input.data('inputData').original = new_value;
             // Al actualizar los curremcy/amount hay que actualizar
             // los montos totales
-            Accounts.loadTotalAmounts();
+            AccountsGUI.loadTotalAmounts();
           }
 
           // Formatear el campo si es necesario
