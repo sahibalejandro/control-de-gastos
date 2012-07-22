@@ -78,9 +78,11 @@ var DynamicInputs = new (function()
             $Input.val( $Input.data('inputData').original );
           } else {
             $Input.data('inputData').original = new_value;
-            // Al actualizar los curremcy/amount hay que actualizar
+            // Al actualizar los currency/amount hay que actualizar
             // los montos totales
-            AccountsGUI.loadTotalAmounts();
+            if($Input.hasClass('currency')){
+              AccountsGUI.loadTotalAmounts();
+            }
           }
 
           // Formatear el campo si es necesario
