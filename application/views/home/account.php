@@ -16,12 +16,13 @@
           <i class="icon-plus-sign icon-white"></i>
         </button>
         <button class="btn btn-danger btn-small dropdown-toggle"
-          data-toggle="dropdown" type="button">
+          data-toggle="dropdown" type="button"
+          id="btn_delete_account_<?php echo $Account->id; ?>">
           <i class="icon-trash icon-white"></i>
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a href="#" class="account_btn_delete"
+          <li><a href="#" class="account_btn_trigger_delete"
             data-target="<?php echo $Account->id ?>">Borrar la cuenta</a></li>
           <li><a href="javascript:;">No borrar nada</a></li>
         </ul>
@@ -30,9 +31,11 @@
     <div class="account_name">&raquo; <?php
       echo $this->QuarkStr->esc($Account->name);
     ?></div>
+    <!-- TODO: Implement account stats.
     <span class="account_available">1000</span>
     <span class="account_total_in">1000</span>
     <span class="account_total_out">1000</span>
+    -->
   </div>
   <div class="movements">
     <div class="movements_list_header clearfix">
@@ -43,7 +46,7 @@
       <div class="movement_cell_delete">Borrar</div>
     </div>
     <div class="movements_list">
-      <?php foreach($movements as $Movement):
+      <?php foreach($Account->getMovements() as $Movement):
         $this->renderView('home/movement.php', array('Movement' => $Movement));
       endforeach; ?>
     </div>

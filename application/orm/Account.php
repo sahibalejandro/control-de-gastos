@@ -12,6 +12,17 @@ class Account extends SpendControlORM
    * @var string
    */
   public static $connection = 'default';
+
+  /**
+   * Return an array with all movements of the actual account.
+   */  
+  public function getMovements()
+  {
+    return $this->getChilds('Movement')
+      ->order('date', 'DESC')
+      ->order('id', 'DESC')
+      ->exec();
+  }
   
   /**
    * Valida los datos antes de guardar, este metodo es invocado

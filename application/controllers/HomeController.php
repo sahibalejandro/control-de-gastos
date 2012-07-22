@@ -11,6 +11,107 @@ class HomeController extends SpendControlController
     ));
   }
 
+  /**
+   * Delete a user's payment
+   */
+  public function ajaxDeletePayment()
+  {
+    try {
+      $where = array(
+        'id' => $_POST['payment_id'],
+        'user_id' => $this->QuarkSess->get('User')->id
+      );
+      // Get payment data for success response message
+      $Payment = Payment::query()->select('concept')->where($where)->puff();
+      if(!$Payment){
+        // Ups! Can't find payment!
+        $this->setAjaxResponse(null, 'Pago no encontrado', true);
+      } else {
+        // Delete payment and send success response message
+        Payment::query()->delete()->where($where)->puff();
+        $this->setAjaxResponse(null, 'No se pudo borrar el pago');
+      }
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo borrar el pago', true);
+    }
+  }
+
+  /**
+   * Add new payment
+   */
+  public function ajaxAddPayment()
+  {
+    try {
+      // Create new payment and save into database.
+      $Payment = new Payment();
+      $Payment->user_id = $this->QuarkSess->get('User')->id;
+      $Payment->amount = 0.0;
+      $Payment->concept = 'Nuevo pago';
+      $Payment->save();
+      
+      // Set ajax response
+      $this->setAjaxResponse(
+        $this->renderView('home/payment.php'
+          , array('Payment' => $Payment)
+          , true)
+        , 'Nuevo pago agregado');
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo agregar el pago', true);
+    }
+  }
+
+  /**
+   * Delete an account from database.
+   */
+  public function ajaxDeleteAccount()
+  {
+    try {
+      $where = array(
+        'id' => $_POST['account_id'],
+        'user_id' => $this->QuarkSess->get('User')->id
+      );
+      
+      // Get account's name before delete, for response message.
+      $Account = Account::query()->selectOne('name')->where($where)->puff();
+      if(!$Account){
+        // Send response message, no account was found.
+        $this->setAjaxResponse(null, 'Cuenta no encontrada', true);
+      }else{
+        // Delete the account data.
+        Account::query()->delete()->where($where)->puff();
+        // Send response message.
+        $this->setAjaxResponse(null, 'La cuenta "'. $Account->name
+          .'" ha sido borrada');
+      }
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo borrar la cuenta', true);
+    }
+  }
+
+  /**
+   * Add a new account to database and send account's HTML code via AJAX.
+   */
+  public function ajaxAddAccount()
+  {
+    try {
+      // Create new account related to the actual user
+      $Account = new Account();
+      $Account->user_id = $this->QuarkSess->get('User')->id;
+      $Account->name = 'Nueva cuenta';
+      $Account->creation_date = new QuarkSQLExpression('NOW()');
+      $Account->save();
+      
+      // Render account HTML code and return to client.
+      $html = $this->renderView(
+        'home/account.php'
+        , array('Account' => $Account)
+        , true);
+      $this->setAjaxResponse($html, 'Nueva cuenta creada');
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo crear la cuenta', true);
+    }
+  }
+
   public function ajaxLoadAccounts()
   {
     try{
@@ -24,12 +125,8 @@ class HomeController extends SpendControlController
       // Renderizar cada vista por separado
       $renders = array();
       foreach($accounts as $Account){
-        $movements = $Account->getChilds('Movement')
-          ->order('date', 'DESC')
-          ->order('id', 'DESC')
-          ->exec();
         $renders[] = $this->renderView('home/account.php'
-          , array('Account' => $Account, 'movements' => &$movements), true);
+          , array('Account' => $Account), true);
       }
       
       // Devolver el array de todos los renders
@@ -211,6 +308,12 @@ class HomeController extends SpendControlController
    */
   public function index()
   {
-    $this->renderView();
+    // Get user payments data using "select" because ORM is not needed here.
+    $payments = Payment::query()
+      ->select('id', 'amount', 'concept')
+      ->where(array('user_id' => $this->QuarkSess->get('User')->id))
+      ->puff();
+      
+    $this->renderView(null, array('payments' =>$payments));
   }
 }

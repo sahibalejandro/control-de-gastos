@@ -3,6 +3,125 @@
  */
 var AccountsGUI = new (function()
 {
+  this.deletePayment = function(payment_id, Button)
+  {
+    var $Btn = $(Button);
+    Quark.ajax('home/ajax-delete-payment', {
+      data: {
+        'payment_id': payment_id
+      },
+      beforeSend: function(jqXHR, Settings)
+      {
+        $Btn.attr('disabled', 'disabled');
+      },
+      complete: function(jqXHR, text_status)
+      {
+        $Btn.removeAttr('disabled');
+      },
+      success: function(Response, status_text, jqXHR)
+      {
+        Main.showMessage(Response.message, 'success');
+        // Remove payment from DOM in a fancy way :)
+        $('#payment_' + payment_id).animate({'width': '0px'}, 250, function()
+        {
+          $(this).remove();
+        });
+        // Refresh total amounts
+        AccountsGUI.loadTotalAmounts();
+      }
+    });
+  };
+  
+  /**
+   * Send request to add a new payment and insert the new payment in DOM
+   * @param [HTMLButtonElement] HTMLButtonElement Clicked button to add payment.
+   */
+  this.addPayment = function(HTMLButtonElement)
+  {
+    var $Btn = $(HTMLButtonElement);
+    Quark.ajax('home/ajax-add-payment', {
+      beforeSend: function(jqXHR, Settings)
+      {
+        $Btn.attr('disabled', 'disabled');
+      },
+      complete: function(jqXHR, text_status)
+      {
+        $Btn.removeAttr('disabled');
+      },
+      success: function(Response, status_text, jqXHR)
+      {
+        Main.showMessage(Response.message, 'success');
+        // Add payment to DOM
+        $('#frm_payments').append(Response.result);
+        // Format payment currency input
+        DynamicInputs.formatInputsInScope('#frm_payments .payment:last');
+        // Show payment
+        $('#frm_payments .payment:last').hide().fadeIn('fast');
+      }
+    });
+  };
+  
+  /**
+   * Envia la solicitud para agregar una nueva cuenta al perfil del usuario actual.
+   * @param {HTMLButtonElement} HTMLButtonElement Botón presionado, opcional
+   */
+  this.addAccount = function(HTMLButtonElement)
+  {
+    var $Btn = $(HTMLButtonElement);
+    Quark.ajax('home/ajax-add-account', {
+      beforeSend: function()
+      {
+        $Btn.attr('disabled', 'disabled');
+      },
+      complete: function()
+      {
+        $Btn.removeAttr('disabled');
+      },
+      success: function(Response)
+      {
+        $('#accounts').append(Response.result);
+        $('#accounts .account:last').hide().fadeIn('fast');
+        Main.showMessage(Response.message, 'success');
+      }
+    });
+  };
+
+  /**
+   * Envia la solicitud para eliminar una cuenta y todos sus movimientos
+   * @param Number account_id ID de la cuenta a borrar
+   */
+  this.deleteAccount = function(account_id)
+  {
+    var $BtnDropdown = $('#btn_delete_account_' + account_id);
+    Quark.ajax('home/ajax-delete-account', {
+      data: {'account_id': account_id},
+      beforeSend: function(jqXHR, Settings)
+      {
+        $BtnDropdown.attr('disabled', 'disabled');
+      },
+      complete: function(jqXHR, text_status)
+      {
+        $BtnDropdown.removeAttr('disabled');
+      },
+      success: function(Response, status_text, jqXHR)
+      {
+        // Remove account from DOM
+        $('#account_' + account_id).fadeOut('fast', function()
+        {
+          $(this).remove();
+        });
+        // Show message
+        Main.showMessage(Response.message, 'success');
+        // Refresh total amounts in GUI
+        AccountsGUI.loadTotalAmounts();
+      }
+    });
+  };
+
+  /**
+   * Agrega un nuevo movimiento a la cuenta con el ID account_id
+   * @param Number account_id
+   */
   this.addMovement = function(account_id)
   {
     Quark.ajax('home/ajax-add-movement',{
@@ -22,8 +141,8 @@ var AccountsGUI = new (function()
   /**
    * Envia la solicitud para borrar un movimiento
    * 
-   * @param  Number movement_id
-   * @param  String HTMLButtonElement
+   * @param Number movement_id
+   * @param String HTMLButtonElement
    */
   this.deleteMovement = function(movement_id, HTMLButtonElement)
   {
@@ -42,7 +161,7 @@ var AccountsGUI = new (function()
       {
         // Recargar las cuentas totales
         AccountsGUI.loadTotalAmounts();
-        
+
         // Borrar el elemento del movimiento
         $('#movement_' + movement_id).slideUp('fast', function()
         {

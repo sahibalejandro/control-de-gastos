@@ -9,11 +9,34 @@
   color: #F50;
 }
 
+/* Le Payments
+===================================================================================*/
+.payment{
+  border: 1px solid #CCC;
+  float: left;
+  padding: 0 2px;
+  position: relative;
+  margin: 1px 1px;
+  width: 146px;
+}
+
+.payment .dynamic_input.currency{
+  font-size: 14px;
+}
+
+.payment .btn{
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1px;
+}
+
 /* Le Account
 ===================================================================================*/
 .account{
   border-style: solid;
-  border-color: #EEE;
+  border-color: #CCC;
   border-width: 0 1px 1px 1px;
   float: left;
   padding: 0;
@@ -22,7 +45,7 @@
 
 .account_header{
   border-top: 4px solid #CCC;
-  line-height: 30px;
+  line-height: 38px;
 }
 
 .account_toolbar{
