@@ -20,6 +20,30 @@
 $config['session_name'] = 'quark3';
 
 /**
+ * Default time zone for functions like strtotime()
+ */
+$config['time_zone'] = 'America/Mexico_City';
+
+/**
+ * LOCALE CONFIG:
+ * Las siguientes directivas serán utilizadas con setlocale(), si no sabes para
+ * que sirve esto no lo toques.
+ *
+ * Si lc_all es diferente de null entonces todas las otras directivas lc_* tomarán
+ * el mismo valor que lc_all.
+ * 
+ * Más info en: http://php.net/manual/en/function.setlocale.php
+ */
+$config['lc_all']      = null;
+$config['lc_collate']  = "0";
+$config['lc_ctype']    = "0";
+$config['lc_monetary'] = "0";
+$config['lc_numeric']  = "0";
+$config['lc_time']     = array('es_MX.UTF8', 'esm');
+// Use only available if PHP was compiled with libintl
+// $config['lc_messages'] = "0";
+
+/**
  * Tiempo de vida (en segundos) de la cookie, por default 15 días.
  */
 $config['cookie_life_time'] = 1296000;
