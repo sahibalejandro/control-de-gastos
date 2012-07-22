@@ -1,0 +1,4 @@
+[21-Jul-2012 23:35:26]
+lang=no_lang controller=home action=ajax-delete-payment arguments=
+Notice: Undefined variable: where in /var/www/personales/control-gastos/application/controllers/HomeController.php on line 20
+
