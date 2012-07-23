@@ -6,15 +6,13 @@
 ?>
 <div class="movement clearfix" id="movement_<?php echo $Movement->id ?>">
   <!-- Tipo de movimiento -->
-  <div class="movement_cell_type">
-    <button type="button" class="btn movement_btn_type <?php
+  <div class="movement_cell_type"><button type="button" class="btn movement_btn_type <?php
       echo ($Movement->type == 1) ? 'btn-success' : 'btn-warning'; ?>"
       title="Cambiar tipo de movimiento (ingreso/egreso)"
       data-type="<?php echo $Movement->type; ?>"
-      data-target="<?php echo $Movement->id; ?>">
-      <i class="<?php
-        echo ($Movement->type == 1) ? 'icon-plus-sign' : 'icon-minus-sign' ?>"></i>
-    </button>
+      data-target="<?php echo $Movement->id; ?>"><i class="<?php
+        echo ($Movement->type == 1) ? 'icon-plus-sign' : 'icon-minus-sign';
+        ?>"></i></button>
   </div>
 
   <!-- Monto de movimiento -->

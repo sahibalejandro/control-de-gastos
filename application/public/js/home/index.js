@@ -11,7 +11,7 @@ $(document).on('ready', function(e)
   
   // Format dynamic inputs for payments
   DynamicInputs.formatInputsInScope('#frm_payments');
-
+  
   // Botón para agregar cuenta
   $('#btn_add_account').on('click', function(e)
   {

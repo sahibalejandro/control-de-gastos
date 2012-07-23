@@ -1,5 +1,5 @@
 <div id="payment_<?php echo $Payment->id; ?>" class="payment">
-  <input type="text" class="dynamic_input"
+  <input type="text" class="dynamic_input concept"
     value="<?php echo $this->QuarkStr->esc($Payment->concept); ?>"
     data-input-data='<?php
       echo json_encode(array(

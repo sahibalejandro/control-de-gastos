@@ -17,7 +17,7 @@
   padding: 0 2px;
   position: relative;
   margin: 1px 1px;
-  width: 146px;
+  width: 187px;
 }
 
 .payment .dynamic_input.currency{
@@ -30,6 +30,10 @@
   top: 0;
   right: 0;
   padding: 0 1px;
+}
+
+.payment .concept{
+  font-size: 12px;
 }
 
 /* Le Account
@@ -72,7 +76,6 @@
 .movements_list_header{
   border: 1px solid #CCC;
   border-width: 1px 0;
-  line-height: 25px;
 }
 
 .movement_cell_type,
@@ -80,9 +83,12 @@
 .movement_cell_date,
 .movement_cell_concept,
 .movement_cell_delete{
+  border: 1px solid #CCC;
+  border-width: 0px 1px 0 0;
   float: left;
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 24px;
 }
 
 .movement_cell_type{
@@ -98,10 +104,11 @@
 }
 
 .movement_cell_concept{
-  width: 188px;
+  width: 184px;
 }
 
 .movement_cell_delete{
+  border-right-width: 0;
   width: 40px;
 }
 
@@ -112,13 +119,14 @@
 
 .movement{
   border-bottom: 1px solid #CCC;
-  line-height: 20px;
 }
 
-.movement_btn_type,.movement_btn_delete {
+.movement_btn_type,
+.movement_btn_delete {
   border-radius: 2px;
   line-height: 14px;
-  padding: 0 2px;
+  margin: -2px 0 0 0;
+  padding: 1px 4px 0 4px;
   vertical-align: middle;
 }
 
@@ -145,7 +153,7 @@ input.dynamic_input {
   height: 20px;
   line-height: 20px !important;
   vertical-align: baseline;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 input.dynamic_input:focus {
@@ -164,11 +172,17 @@ input.dynamic_input.date{
   text-align: center;
 }
 
+input.dynamic_input.account_name{
+  font-size: 20px;
+  padding-left: 10px;
+  width: auto;
+}
+
 /* Le Media Queries
 ===================================================================================*/
 @media (min-width: 1200px) {
   .movement_cell_concept{
-    width: 303px;
+    width: 299px;
   }
 }
 

@@ -4,7 +4,7 @@
  * @author Sahib J. Leo
  */
 ?>
-<form class="account" id="account_<?php echo $Account->id ?>">
+<form class="account" id="account_<?php echo $Account->id ?>" action="javascript:;">
   <div class="account_header clearfix">
     <div class="account_toolbar">
       <div class="btn-group">
@@ -28,9 +28,17 @@
         </ul>
       </div>
     </div>
-    <div class="account_name">&raquo; <?php
-      echo $this->QuarkStr->esc($Account->name);
-    ?></div>
+    <input type="text" class="dynamic_input account_name"
+      value="<?php echo $this->QuarkStr->esc($Account->name); ?>"
+      data-input-data='<?php
+        echo json_encode(array(
+          'id' => $Account->id,
+          'orm' => 'Account',
+          'field' => 'name',
+          // Use &apos; to avoid breaking the JSON
+          'original' => str_replace("'", '&apos;', $Account->name)
+        ));
+    ?>'>
     <!-- TODO: Implement account stats.
     <span class="account_available">1000</span>
     <span class="account_total_in">1000</span>

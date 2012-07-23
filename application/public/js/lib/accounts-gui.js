@@ -20,7 +20,7 @@ var AccountsGUI = new (function()
       },
       success: function(Response, status_text, jqXHR)
       {
-        Main.showMessage(Response.message, 'success');
+        // Main.showMessage(Response.message, 'success');
         // Remove payment from DOM in a fancy way :)
         $('#payment_' + payment_id).animate({'width': '0px'}, 250, function()
         {
@@ -50,7 +50,7 @@ var AccountsGUI = new (function()
       },
       success: function(Response, status_text, jqXHR)
       {
-        Main.showMessage(Response.message, 'success');
+        // Main.showMessage(Response.message, 'success');
         // Add payment to DOM
         $('#frm_payments').append(Response.result);
         // Format payment currency input
@@ -81,7 +81,7 @@ var AccountsGUI = new (function()
       {
         $('#accounts').append(Response.result);
         $('#accounts .account:last').hide().fadeIn('fast');
-        Main.showMessage(Response.message, 'success');
+        // Main.showMessage(Response.message, 'success');
       }
     });
   };
@@ -111,7 +111,7 @@ var AccountsGUI = new (function()
           $(this).remove();
         });
         // Show message
-        Main.showMessage(Response.message, 'success');
+        // Main.showMessage(Response.message, 'success');
         // Refresh total amounts in GUI
         AccountsGUI.loadTotalAmounts();
       }
