@@ -6,6 +6,8 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+Options -Indexes
+
 # Descomentar las siguientes lineas para habilitar URL amigable.
 <IfModule mod_rewrite.c>
 	RewriteEngine On

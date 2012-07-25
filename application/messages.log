@@ -3,3 +3,31 @@ lang=no_lang controller=home action=access-denied arguments=
 Warning: require(views/layout/login.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
 Fatal error: require(): Failed opening required 'views/layout/login.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
 
+[23-Jul-2012 16:18:36]
+lang=no_lang controller= action= arguments=
+Fatal error: Call to a member function getAccessLevel() on a non-object in /var/www/personales/expenditure-control/system/classes/Quark.php on line 204
+
+[23-Jul-2012 16:19:21]
+lang=no_lang controller=home action=ajax-login arguments=
+Fatal error: Class 'User' not found in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 20
+
+[24-Jul-2012 22:41:31]
+lang=no_lang controller= action= arguments=
+Parse error: syntax error, unexpected ')' in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 72
+
+[24-Jul-2012 23:08:40]
+lang=no_lang controller= action= arguments=
+Parse error: syntax error, unexpected ';' in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 96
+
+[25-Jul-2012 00:15:11]
+lang=no_lang controller=home action=ajax-recover-password arguments=
+Warning: Missing argument 1 for PHPMailer::MsgHTML(), called in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 58 and defined in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2212
+Notice: Undefined variable: message in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2213
+Notice: Undefined variable: message in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2233
+Notice: Undefined variable: message in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2243
+
+[25-Jul-2012 00:17:59]
+lang=no_lang controller=home action=ajax-recover-password arguments=
+Warning: require(views/home/recover-password-email.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
+Fatal error: require(): Failed opening required 'views/home/recover-password-email.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
+
