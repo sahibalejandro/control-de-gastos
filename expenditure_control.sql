@@ -32,8 +32,8 @@ CREATE TABLE `movements` (
   PRIMARY KEY (`id`),
   KEY `cuenta_id` (`accounts_id`),
   KEY `users_id` (`users_id`),
-  CONSTRAINT `movements_ibfk_6` FOREIGN KEY (`accounts_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `movements_ibfk_5` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `movements_ibfk_5` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `movements_ibfk_6` FOREIGN KEY (`accounts_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -53,11 +53,11 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
-  `pass` char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `creation_date` datetime NOT NULL,
+  `passwd` char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- 2012-07-23 11:59:55
+-- 2012-07-25 00:37:51
