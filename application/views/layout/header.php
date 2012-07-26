@@ -27,7 +27,6 @@
         <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" class="brand">Control de gastos</a>
         <?php if( $this->QuarkSess->getAccessLevel() == 0 ):
           $this->appendJsFiles('layout/login.js');
-        
         /*
          * Login form
          ========================================================================= */
@@ -68,7 +67,38 @@
          * /// Login form
          ========================================================================= */
         ?>
-        <?php else: ?>
+        <?php else:
+        /*
+         * User bar
+         ========================================================================= */
+        ?>
+        <ul class="nav">
+          <li class="dropdown"><a href="#" class="dropdown-toggle"
+            data-toggle="dropdown">Nuevo <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="icon-list-alt"></i> Nueva cuenta...</a></li>
+              <li><a href="#"><i class="icon-flag"></i> Nuevo pago...</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li class="dropdown"><a href="#" class="dropdown-toggle"
+            data-toggle="dropdown"><i class="icon-user icon-white"></i>
+            <?php echo $this->QuarkStr->esc(
+            $this->QuarkSess->get('UserData')->name); ?>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="icon-pencil"></i> Editar perfil</a></li>
+              <li class="divider"></li>
+              <li><a href="<?php echo $this->QuarkURL->getURL('salir'); ?>"><i class="icon-off"></i> Cerrar sesión</a></li>
+            </ul>
+          </li>
+        </ul>
+        <?php
+        /*
+         * /// User nav bar
+         ========================================================================= */
+        ?>
         <?php endif; ?>
       </div>
     </div>

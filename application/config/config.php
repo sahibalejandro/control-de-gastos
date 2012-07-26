@@ -8,5 +8,8 @@ $db_config['default']['password'] = 'rootsql';
 $db_config['default']['options'] = array();
 $db_config['default']['charset'] = 'UTF8';
 $routes = array(
-  'recover-password' => 'home/recover-password'
+  // Recuperar password
+  'recover-password' => 'home/recover-password',
+  // Salir
+  'salir' => 'home/logout'
 );

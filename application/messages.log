@@ -31,3 +31,12 @@ lang=no_lang controller=home action=ajax-recover-password arguments=
 Warning: require(views/home/recover-password-email.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
 Fatal error: require(): Failed opening required 'views/home/recover-password-email.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
 
+[25-Jul-2012 19:30:10]
+lang=no_lang controller=home action=index arguments=
+Warning: require(views/home/index.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
+Fatal error: require(): Failed opening required 'views/home/index.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
+
+[25-Jul-2012 19:54:40]
+lang=no_lang controller=home action=logout arguments=
+Notice: Undefined index: default in /var/www/personales/expenditure-control/system/classes/QuarkSess.php on line 145
+

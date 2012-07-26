@@ -14,8 +14,21 @@ class HomeController extends BaseController
     ));
   }
   
+  /**
+   * Show the interface to manage the user's spending accounts.
+   */
   public function index()
   {
+    $this->setPageTitle('Mis cuentas')->renderView();
+  }
+  
+  /**
+   * Close user session, this method is called by a route, see config file.
+   */
+  public function logout()
+  {
+    $this->QuarkSess->kill();
+    $this->__quarkAccessDenied();
   }
   
   /**
