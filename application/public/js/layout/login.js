@@ -25,12 +25,12 @@ $(document).on('ready', function(e)
       },
       success: function(Response, status_text, jqXHR)
       {
-        // Reload page on login
-        // window.location.reload(true);
+        // Reload to home
+        window.location.href = Quark.getURL('');
       },
       fail: function(Response, status_text, jqXHR)
       {
-        // Call global fail function
+        // Call global fail method
         Quark.getAJAXSettings().fail(Response, status_text, jqXHR);
         
         // Clear password and focus email field.

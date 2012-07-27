@@ -1,0 +1,113 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * BEGIN: Color selector styles
+ */
+.btn_color_selector{
+  border: 2px solid #FFF;
+  border-radius: 4px;
+  display: block;
+  float: left;
+  margin: 4px 4px 0 0;
+  width: 16px;
+  height: 16px;
+}
+
+.btn_color_selector:hover{
+  border-color: #CCC;
+}
+
+.btn_color_selector.active{
+  border-color: #555;
+}
+
+
+#btn_color_selector_blue{
+  background-color: #0074CC;
+}
+
+#btn_color_selector_aqua{
+  background-color: #49AFCD;
+}
+
+#btn_color_selector_green{
+  background-color: #5BB75B;
+}
+
+#btn_color_selector_orange{
+  background-color: #FAA732;
+}
+
+#btn_color_selector_red{
+  background-color: #DA4F49;
+}
+
+/*
+ * END: Color selector styles
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* BEGIN: Accounts list
+*/
+
+#accounts_list{
+  
+}
+
+.account{
+  float: left;
+  margin: 1px;
+  width: 468px;
+}
+
+.account_header h4{
+  color: #FFF;
+  font-size: 18px;
+  line-height: 40px;
+  padding: 0 0 0 18px;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+}
+
+.account_body{
+  border: 1px solid rgba(0,0,0,0.2);
+  border-width: 0px 1px 1px 1px;
+  width: 466px;
+  height: 400px;
+}
+
+.movement{
+  border-bottom: 1px solid #CCC;
+  padding: 4px;
+}
+
+.movement_amount{
+  float: left;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 30px;
+  padding-left: 18px;
+  width: 184px;
+}
+
+.movement.in .movement_amount{
+  color: #5BB75B;
+}
+
+.movement.out .movement_amount{
+  color: #FAA732;
+}
+
+.movement_date{
+  float: left;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: right;
+  width: 180px;
+}
+
+.movement_actions{
+  float: right;
+  width: 32px;
+}
+
+/*
+ * END: Accounts list
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

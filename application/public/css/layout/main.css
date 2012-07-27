@@ -3,16 +3,22 @@ body{
 }
 
 #footer{
-border-top: 1px solid #CCC;
-color: #888;
-padding-top: 10px;
-text-align: center;
+  border-top: 1px solid #CCC;
+  color: #888;
+  margin-top: 18px;
+  padding-top: 18px;
+  text-align: center;
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * BEGIN: Login form styles
+ */
+ 
 ul#login_dropdown li{
   padding: 10px 15px;
 }
 
+/* No bottom margin on login form */
 ul#login_dropdown li form{
   margin-bottom: 0;
 }
@@ -22,3 +28,22 @@ ul#login_dropdown li form{
   padding: 0;
   margin: 0;
 }
+/*
+ * END: Login form styles
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * BEGIN: Bootstrap fixes
+
+/* No bottom margin in last .control-group inside modals */
+.modal-body form .control-group:last-child{
+  margin-bottom: 0;
+}
+/* No bottom margin in forms inside modals */
+.modal-body form{
+  margin-bottom: 0;
+}
+
+/*
+ * END: Bootstrap fixes
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

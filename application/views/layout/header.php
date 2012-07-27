@@ -16,21 +16,15 @@
   ?>
 </head>
 <body>
-  <?php
-  /*
-   * Top nav bar
-   =============================================================================== */
-  ?>
+  <!-- BEGIN: Main navbar = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
         <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" class="brand">Control de gastos</a>
         <?php if( $this->QuarkSess->getAccessLevel() == 0 ):
           $this->appendJsFiles('layout/login.js');
-        /*
-         * Login form
-         ========================================================================= */
         ?>
+        <!-- BEGIN: Login form = = = = = = = = = = = = = = = = = = = = = = = = = -->
         <ul class="nav pull-right">
           <li class="dropdown">
             <a href="#" id="btn_login_dropdown" class="dropdown-toggle"
@@ -62,25 +56,9 @@
             </ul>
           </li>
         </ul>
-        <?php
-        /*
-         * /// Login form
-         ========================================================================= */
-        ?>
-        <?php else:
-        /*
-         * User bar
-         ========================================================================= */
-        ?>
-        <ul class="nav">
-          <li class="dropdown"><a href="#" class="dropdown-toggle"
-            data-toggle="dropdown">Nuevo <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#"><i class="icon-list-alt"></i> Nueva cuenta...</a></li>
-              <li><a href="#"><i class="icon-flag"></i> Nuevo pago...</a></li>
-            </ul>
-          </li>
-        </ul>
+        <!-- END: Login form = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+        <?php else: ?>
+        <!-- BEGIN: User nav bar = = = = = = = = = = = = = = = = = = = = = = = = -->
         <ul class="nav pull-right">
           <li class="dropdown"><a href="#" class="dropdown-toggle"
             data-toggle="dropdown"><i class="icon-user icon-white"></i>
@@ -94,22 +72,12 @@
             </ul>
           </li>
         </ul>
-        <?php
-        /*
-         * /// User nav bar
-         ========================================================================= */
-        ?>
+        <!-- END: User nav bar = = = = = = = = = = = = = = = = = = = = = = = = = -->
         <?php endif; ?>
       </div>
     </div>
   </div>
-  <?php
-  /*
-   * /// Top nav bar
-   =============================================================================== */
+  <!-- END: Main navbar = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
   
-  /*
-   * Main container
-   =============================================================================== */
-  ?>
+  <!-- BEGIN: Main container = = = = = = = = = = = = = = = = = = = = = = = = = = -->
   <div class="container">

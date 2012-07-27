@@ -3,6 +3,7 @@ class BaseController extends QuarkController
 {
   /**
    * Page title used in view "layout/header.php"
+   * Use setPageTitle() to set value
    */
   protected $page_title;
   
