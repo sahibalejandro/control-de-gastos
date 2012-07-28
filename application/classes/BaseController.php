@@ -8,12 +8,22 @@ class BaseController extends QuarkController
   protected $page_title;
   
   /**
+   * Data from signed user
+   */
+  protected $UserData;
+  
+  /**
    * Constructor
    */
   public function __construct()
   {
     parent::__construct();
     $this->setDefaultAccessLevel(1);
+    
+    // Bind user data if exists
+    if($this->QuarkSess->getAccessLevel() > 0){
+      $this->UserData = $this->QuarkSess->get('UserData');
+    }
   }
   
   /**

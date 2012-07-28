@@ -42,6 +42,7 @@ ul#login_dropdown li form{
 /* No bottom margin in forms inside modals */
 .modal-body form{
   margin-bottom: 0;
+  width: 90px;
 }
 
 /*

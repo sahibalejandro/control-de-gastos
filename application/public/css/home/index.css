@@ -48,34 +48,55 @@
 * BEGIN: Accounts list
 */
 
-#accounts_list{
-  
-}
-
 .account{
   float: left;
-  margin: 1px;
+  margin: 18px 1px 0 1px;
   width: 468px;
+}
+
+.account_header{
+  border-radius: 25px 4px 0 0;
 }
 
 .account_header h4{
   color: #FFF;
   font-size: 18px;
-  line-height: 40px;
+  line-height: 36px;
   padding: 0 0 0 18px;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+}
+
+.account_header .btn-group{
+  padding: 4px 4px 0 0;
 }
 
 .account_body{
   border: 1px solid rgba(0,0,0,0.2);
   border-width: 0px 1px 1px 1px;
+  overflow: hidden;
+  position: relative;
   width: 466px;
-  height: 400px;
+  height: 420px;
+}
+
+.movements_list{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 466px;
 }
 
 .movement{
-  border-bottom: 1px solid #CCC;
+  border-top: 1px solid #CCC;
   padding: 4px;
+}
+
+.movement:hover{
+  background-color: #F8F8F8;
+}
+
+.movement:first-child{
+  border-top: none;
 }
 
 .movement_amount{
@@ -84,7 +105,7 @@
   font-weight: bold;
   line-height: 30px;
   padding-left: 18px;
-  width: 184px;
+  width: 240px;
 }
 
 .movement.in .movement_amount{
@@ -97,15 +118,39 @@
 
 .movement_date{
   float: left;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 30px;
   text-align: right;
-  width: 180px;
+  width: 170px;
+}
+
+.movement_concept{
+  font-size: 16px;
+  padding-left: 18px;
+}
+
+.movement.to_delete .movement_amount,
+.movement.to_delete .movement_date,
+.movement.to_delete .movement_concept{
+  text-decoration: line-through;
 }
 
 .movement_actions{
-  float: right;
-  width: 32px;
+  display: none;
+}
+
+.btn_more_movements{
+  border-top: 1px solid #CCC;
+  border-radius: 0 0 20px 20px;
+  background-color: #EEE;
+  display: block;
+  line-height: 28px;
+  text-align: center;
+}
+
+.btn_more_movements:hover{
+  background-color: #DDD;
+  text-decoration: none;
 }
 
 /*

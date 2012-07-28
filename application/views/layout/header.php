@@ -62,8 +62,7 @@
         <ul class="nav pull-right">
           <li class="dropdown"><a href="#" class="dropdown-toggle"
             data-toggle="dropdown"><i class="icon-user icon-white"></i>
-            <?php echo $this->QuarkStr->esc(
-            $this->QuarkSess->get('UserData')->name); ?>
+            <?php echo $this->QuarkStr->esc($this->UserData->name); ?>
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#"><i class="icon-pencil"></i> Editar perfil</a></li>

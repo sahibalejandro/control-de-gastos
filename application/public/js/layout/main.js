@@ -6,7 +6,7 @@ $(document).on('ready', function(e)
     {
       Main.alert('FAIL: ' + Response.message);
     }
-  });  
+  });
 });
 
 // Wrap main functions in Main object.

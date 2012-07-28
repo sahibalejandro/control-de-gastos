@@ -1,42 +1,78 @@
-[23-Jul-2012 12:16:55]
-lang=no_lang controller=home action=access-denied arguments=
-Warning: require(views/layout/login.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
-Fatal error: require(): Failed opening required 'views/layout/login.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
+[27-Jul-2012 20:37:24]
+lang=no_lang controller=home action=ajax-add-account arguments=
+Fatal error: Call to undefined method AccountORM::getMovementsSince() in /var/www/personales/expenditure-control/application/views/home/account.php on line 8
 
-[23-Jul-2012 16:18:36]
-lang=no_lang controller= action= arguments=
-Fatal error: Call to a member function getAccessLevel() on a non-object in /var/www/personales/expenditure-control/system/classes/Quark.php on line 204
-
-[23-Jul-2012 16:19:21]
-lang=no_lang controller=home action=ajax-login arguments=
-Fatal error: Class 'User' not found in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 20
-
-[24-Jul-2012 22:41:31]
-lang=no_lang controller= action= arguments=
-Parse error: syntax error, unexpected ')' in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 72
-
-[24-Jul-2012 23:08:40]
-lang=no_lang controller= action= arguments=
-Parse error: syntax error, unexpected ';' in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 96
-
-[25-Jul-2012 00:15:11]
-lang=no_lang controller=home action=ajax-recover-password arguments=
-Warning: Missing argument 1 for PHPMailer::MsgHTML(), called in /var/www/personales/expenditure-control/application/controllers/HomeController.php on line 58 and defined in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2212
-Notice: Undefined variable: message in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2213
-Notice: Undefined variable: message in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2233
-Notice: Undefined variable: message in /var/www/personales/expenditure-control/application/includes/phpmailer/class.phpmailer.php on line 2243
-
-[25-Jul-2012 00:17:59]
-lang=no_lang controller=home action=ajax-recover-password arguments=
-Warning: require(views/home/recover-password-email.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
-Fatal error: require(): Failed opening required 'views/home/recover-password-email.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
-
-[25-Jul-2012 19:30:10]
+[27-Jul-2012 20:37:31]
 lang=no_lang controller=home action=index arguments=
-Warning: require(views/home/index.php): failed to open stream: No such file or directory in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
-Fatal error: require(): Failed opening required 'views/home/index.php' (include_path='.:/usr/share/php:/usr/share/pear::application:system') in /var/www/personales/expenditure-control/system/classes/QuarkController.php on line 336
+Fatal error: Call to undefined method AccountORM::getMovementsSince() in /var/www/personales/expenditure-control/application/views/home/account.php on line 8
 
-[25-Jul-2012 19:54:40]
-lang=no_lang controller=home action=logout arguments=
-Notice: Undefined index: default in /var/www/personales/expenditure-control/system/classes/QuarkSess.php on line 145
+[27-Jul-2012 20:40:28]
+lang=no_lang controller=home action=ajax-add-account arguments=
+Fatal error: Call to undefined method AccountORM::getMovementsSince() in /var/www/personales/expenditure-control/application/views/home/account.php on line 8
+
+[27-Jul-2012 20:40:33]
+lang=no_lang controller=home action=index arguments=
+Fatal error: Call to undefined method AccountORM::getMovementsSince() in /var/www/personales/expenditure-control/application/views/home/account.php on line 8
+
+[27-Jul-2012 20:43:54]
+lang=no_lang controller=home action=index arguments=
+Notice: Undefined property: AccountORM::$color in /var/www/personales/expenditure-control/application/views/home/account.php on line 3
+
+[27-Jul-2012 21:39:03]
+lang=no_lang controller=home action=index arguments=
+QuarkORMEngine::query(): SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+[27-Jul-2012 21:39:03]
+lang=no_lang controller=home action=index arguments=
+Fatal error: Uncaught exception 'QuarkORMException' with message 'PDOException: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens' in /var/www/personales/expenditure-control/system/classes/QuarkORMEngine.php:130
+Stack trace:
+#0 /var/www/personales/expenditure-control/system/classes/QuarkORMQueryBuilder.php(360): QuarkORMEngine::query('SELECT * FROM `...', Array, 'default')
+#1 /var/www/personales/expenditure-control/system/classes/QuarkORMQueryBuilder.php(425): QuarkORMQueryBuilder->exec()
+#2 /var/www/personales/expenditure-control/application/orm/MovementORM.php(53): QuarkORMQueryBuilder->puff()
+#3 /var/www/personales/expenditure-control/application/views/home/account.php(10): MovementORM::getSince('1', 0, 10)
+#4 /var/www/personales/expenditure-control/system/classes/QuarkController.php(336): require('/var/www/person...')
+#5 /var/www/personales/expenditure-control/application/views/home/index.php(74): QuarkController->renderView('home/account.ph...', Array)
+#6 /var/www/pe in /var/www/personales/expenditure-control/system/classes/QuarkORMEngine.php on line 130
+
+[27-Jul-2012 21:40:22]
+lang=no_lang controller=home action=index arguments=
+Warning: number_format() expects parameter 2 to be long, string given in /var/www/personales/expenditure-control/application/views/home/movement.php on line 15
+
+[27-Jul-2012 21:40:33]
+lang=no_lang controller=home action=index arguments=
+Warning: Wrong parameter count for number_format() in /var/www/personales/expenditure-control/application/views/home/movement.php on line 15
+
+[27-Jul-2012 22:44:07]
+lang=no_lang controller=home action=index arguments=
+QuarkORMEngine::query(): SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+
+[27-Jul-2012 22:44:07]
+lang=no_lang controller=home action=index arguments=
+Notice: Undefined variable: limit in /var/www/personales/expenditure-control/application/orm/MovementORM.php on line 52
+Fatal error: Uncaught exception 'QuarkORMException' with message 'PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1' in /var/www/personales/expenditure-control/system/classes/QuarkORMEngine.php:130
+Stack trace:
+#0 /var/www/personales/expenditure-control/system/classes/QuarkORMQueryBuilder.php(360): QuarkORMEngine::query('SELECT * FROM `...', Array, 'default')
+#1 /var/www/personales/expenditure-control/system/classes/QuarkORMQueryBuilder.php(425): QuarkORMQueryBuilder->exec()
+#2 /var/www/personales/expenditure-control/application/orm/MovementORM.php(52): QuarkORMQueryBuilder->puff()
+#3 /var/www/personales/expenditure-control/application/views/home/account.php(11): MovementORM::getSince('1')
+#4 /var/www/personales/expenditure-control/system/classes/QuarkController.php(336): require('/var/www/person...')
+#5 /var/www/personales/expenditure-control/application/vi in /var/www/personales/expenditure-control/system/classes/QuarkORMEngine.php on line 130
+
+[27-Jul-2012 22:58:06]
+lang=no_lang controller=home action=index arguments=
+QuarkORMEngine::query(): SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=> '8' AND `accounts_id` = '1') ORDER BY date DESC LIMIT 1' at line 1
+
+[27-Jul-2012 22:58:06]
+lang=no_lang controller=home action=index arguments=
+Fatal error: Uncaught exception 'QuarkORMException' with message 'PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=> '8' AND `accounts_id` = '1') ORDER BY date DESC LIMIT 1' at line 1' in /var/www/personales/expenditure-control/system/classes/QuarkORMEngine.php:130
+Stack trace:
+#0 /var/www/personales/expenditure-control/system/classes/QuarkORMQueryBuilder.php(360): QuarkORMEngine::query('SELECT * FROM `...', Array, 'default')
+#1 /var/www/personales/expenditure-control/system/classes/QuarkORMQueryBuilder.php(425): QuarkORMQueryBuilder->exec()
+#2 /var/www/personales/expenditure-control/application/orm/MovementORM.php(57): QuarkORMQueryBuilder->puff()
+#3 /var/www/personales/expenditure-control/application/views/home/account.php(11): MovementORM::getSince('8', '1')
+#4 /var/www/personales/expenditure-control/system/classes/QuarkController.php(336): require('/var/www/person in /var/www/personales/expenditure-control/system/classes/QuarkORMEngine.php on line 130
+
+[28-Jul-2012 01:06:29]
+lang=no_lang controller=home action=ajax-change-movement-type arguments=
+QuarkORMEngine::query(): SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=> '11' AND `users_id` = '8')' at line 1
 

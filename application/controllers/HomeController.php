@@ -19,7 +19,156 @@ class HomeController extends BaseController
    */
   public function index()
   {
-    $this->setPageTitle('Mis cuentas')->renderView();
+    // Render view with user accounts
+    $this->setPageTitle('Mis cuentas')->renderView(null, array(
+      'user_accounts' => AccountORM::getUserAccounts($this->UserData->id)
+    ));
+  }
+
+  /**
+   * Delete the movement specified by $_POST['movement_id']
+   */
+  public function ajaxDeleteMovement()
+  {
+    try {
+      MovementORM::query()->delete()
+        ->where('`id` = :movement_id AND `users_id` = :user_id', array(
+          ':movement_id' => $_POST['movement_id'],
+          ':user_id' => $this->UserData->id
+        ))
+        ->puff();
+      // Send total amounts updated
+      $this->setAjaxResponse(array(
+        'total_amounts' => $this->getUserTotalAmounts()
+      ));
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo borrar el movimiento', true);
+    }
+  }
+
+  /**
+   * Change the type of the movement specified by $_POST['movement_id']
+   * Sends the new type via AJAX
+   */  
+  public function ajaxChangeMovementType()
+  {
+    try {
+      $MovementORM = MovementORM::query()->findOne()
+        ->where('`id` = :movement_id AND `users_id` = :user_id', array(
+          ':movement_id' => $_POST['movement_id'],
+          ':user_id' => $this->UserData->id))
+        ->puff();
+      if(!$MovementORM){
+        $this->setAjaxResponse(null, 'Movimiento no encontrado', true);
+      } else {
+        $MovementORM->type = $MovementORM->type == 1 ? 0 : 1;
+        $MovementORM->save();
+        
+        // Send response
+        $this->setAjaxResponse(array(
+          'type' => $MovementORM->type,
+          // Add total user amounts to update DOM
+          'total_amounts' => $this->getUserTotalAmounts()
+        ));
+      }
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo cambiar el tipo de movimiento', true);
+    }
+  }
+  
+  /**
+   * Loads movements from database to show on a movements list account specified
+   * by $_POST['account_id'] and user ID
+   */
+  public function ajaxLoadMoreMovements()
+  {
+    try {
+      $loaded_ids     = array();
+      $max_timestamp  = $_POST['max_timestamp'];
+      $movements_html = '';
+      
+      // Retrieve the movements
+      $movements = MovementORM::getSince($this->UserData->id
+        , $_POST['account_id']
+        , $_POST['max_timestamp']);
+
+      if(count($movements) > 0){
+        // Extract the movement's IDs and build render
+        foreach($movements as $MovementORM){
+          $loaded_ids[] = $MovementORM->id;
+          $movements_html .= $this->renderView('home/movement.php'
+            , array('MovementORM' => $MovementORM), true);
+        }
+        // Get timestamp from last $MovementORM
+        $max_timestamp = strtotime($MovementORM->date);
+      }
+      
+      // Send ajax response
+      $this->setAjaxResponse(array(
+        'loaded_ids'     => $loaded_ids,
+        'max_timestamp'  => $max_timestamp,
+        'movements_html' => $movements_html
+      ));
+      
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo cargar más movimientos', true);
+    }
+  }
+  
+  /**
+   * Add new account to signed user
+   */
+  public function ajaxAddAccount()
+  {
+    $_POST['account_name'] = trim($_POST['account_name']);
+    settype($_POST['account_init_amount'], 'float');
+    if($_POST['account_name'] == ''
+      || $_POST['account_init_amount'] < 1){
+      $this->setAjaxResponse(null
+        , 'Especifica el nombre de la cuenta y un monto inicial', true);
+    } else {
+      try {
+        
+        // Create new account
+        $AccountORM = new AccountORM();
+        $AccountORM->name     = $_POST['account_name'];
+        $AccountORM->color    = $_POST['account_color'];
+        $AccountORM->users_id = $this->UserData->id;
+        $AccountORM->save();
+        
+        // Add initial movement to new account
+        $MovementORM = new MovementORM();
+        $MovementORM->amount = $_POST['account_init_amount'];
+        $MovementORM->setParent($AccountORM);
+        $MovementORM->users_id = $this->UserData->id;
+        $MovementORM->type = 1;
+        $MovementORM->concept = 'Monto inicial';
+        $MovementORM->save();
+        
+        // Get account HTML render
+        $account_html = $this->renderView('home/account.php'
+          , array('AccountORM' => $AccountORM), true);
+        
+        // Return HTML render and message
+        $this->setAjaxResponse(array(
+          'account_html' => $account_html,
+          // Add total amounts to update DOM
+          'total_amounts' => $this->getUserTotalAmounts()
+          ), 'Cuenta "'.$_POST['account_name'].'" creada.');
+        
+      } catch (QuarkORMException $e) {
+        $this->setAjaxResponse(null, 'No se pudo agregar la nueva cuenta', true);
+      }
+    }
+  }
+  
+  protected function getUserTotalAmounts()
+  {
+    return array(
+      'total' => 0,
+      'payments' => 0,
+      'available' => 0
+    );
   }
   
   /**

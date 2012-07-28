@@ -68,52 +68,16 @@ $this->appendCssFiles('home/index.css')->renderView('layout/header.php');
 <!-- END: Add account modal dialog = = = = = = = = = = = = = = = = = = = = = = = -->
 
 <!-- BEGIN: Accounts list = = = = = = = = = = = = = = = = = = = = = = = = = = =  -->
-<div id="accounts_list" class="clearfix">
-  <div class="account">
-    <div class="account_header">
-      <h4 style="background-color: #0074CC;">Account name</h4>
-    </div>
-    <div class="account_body">
-      <div class="movement in">
-        <div class="clearfix">
-          <div class="movement_amount">$10,000.00</div>
-          <div class="movement_date">27 de Jul, 2012</div>
-          <div class="movement_actions">
-            <div class="btn-group">
-              <a href="#" class="btn dropdown-toggle"
-                data-toggle="dropdown"><span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#"><i class="icon-refresh"></i> Cambiar tipo</a></li>
-                <li><a href="#"><i class="icon-pencil"></i> Editar...</a></li>
-                <li><a href="#"><i class="icon-trash"></i> Borrar</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="movement_concept">Concepto del movimiento lorem ipsum dolor sit a met</div>
-      </div>
-      <div class="movement out">
-        <div class="clearfix">
-          <div class="movement_amount">$999,999,999.99</div>
-          <div class="movement_date">27 de Jul, 2012</div>
-          <div class="movement_actions">
-            <div class="btn-group">
-              <a href="#" class="btn dropdown-toggle"
-                data-toggle="dropdown"><span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#"><i class="icon-refresh"></i> Cambiar tipo</a></li>
-                <li><a href="#"><i class="icon-pencil"></i> Editar...</a></li>
-                <li><a href="#"><i class="icon-trash"></i> Borrar</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="movement_concept">Concepto del movimiento lorem ipsum dolor sit a met</div>
-      </div>
-    </div>
-  </div>
-</div>
+<div id="accounts_list" class="clearfix"><?php
+  // Render the user accounts
+  foreach($user_accounts as $AccountORM):
+    $this->renderView('home/account.php', array('AccountORM' => $AccountORM));
+  endforeach;
+?></div>
 <!-- END: Accounts list = = = = = = = = = = = = = = = = = = = = = = = = = = = =  -->
 <?php
-$this->appendJsFiles('home/index.js')->renderView('layout/footer.php');
+$this->appendJsFiles(
+  'lib/jquery.mousewheel.js',
+  'home/index.js')
+  ->renderView('layout/footer.php');
 ?>
