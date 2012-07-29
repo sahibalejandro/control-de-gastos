@@ -7,11 +7,16 @@
       </a>
       <ul class="dropdown-menu">
         <li><a href="#"><i class="icon-pencil"></i> Editar...</a></li>
+        <li><a href="#" class="btn_new_movement"
+          data-account-id="<?php echo $AccountORM->id; ?>">
+          <i class="icon-plus-sign"></i> Nuevo movimiento...</a></li>
         <li><a href="#"><i class="icon-trash"></i> Borrar cuenta</a></li>
       </ul>
     </div>
     <h4>
-      &bull; <?php echo $this->QuarkStr->esc($AccountORM->name); ?>
+      &bull; <span id="account_<?php echo $AccountORM->id; ?>_name"><?php
+        echo $this->QuarkStr->esc($AccountORM->name);
+      ?></span>
     </h4>
   </div>
   <div class="account_body">

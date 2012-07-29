@@ -36,13 +36,12 @@ ul#login_dropdown li form{
  * BEGIN: Bootstrap fixes
 
 /* No bottom margin in last .control-group inside modals */
-.modal-body form .control-group:last-child{
+.modal form .control-group:last-child{
   margin-bottom: 0;
 }
 /* No bottom margin in forms inside modals */
-.modal-body form{
+.modal form{
   margin-bottom: 0;
-  width: 90px;
 }
 
 /*

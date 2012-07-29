@@ -1,5 +1,11 @@
 $(document).on('ready', function(e)
 {
+  // Configure jQuery UI Datepicker default settings.
+  $.datepicker.setDefaults({
+    'altFormat': 'yy-mm-dd',
+    'dateFormat': "D dd 'de' M, yy"
+  });
+  
   // Initialize add accounts handler
   AccountsHandler.init();
   
@@ -31,8 +37,9 @@ var AccountsHandler = new (function()
     });
     
     // Bind submit event to new account form
-    $('#btn_submit_add_account').on('click', function(e)
+    $('#frm_add_account').on('submit', function(e)
     {
+      e.preventDefault();
       AccountsHandler.add();
     });
   };
@@ -66,6 +73,9 @@ var AccountsHandler = new (function()
     });
   };
   
+  /**
+   * TODO: Implement this method
+   */
   this.updateTotalAmounts = function(TotalAmounts)
   {
     console.log(TotalAmounts);
@@ -151,6 +161,33 @@ var MovementsHandler = new (function()
       MovementsHandler.deleteMovement(this);
     });
     
+    // Datepicker
+    $('#movement_date_gui').datepicker({
+      'altField': '#movement_date'
+    });
+    
+    // Add a new movement to an account.
+    $('.btn_new_movement').live('click', function(e)
+    {
+      e.preventDefault();
+      MovementsHandler.editMovement($(this).data().accountId, null);
+    });
+    
+    // Edit a movement
+    $('.btn_movement_edit').live('click', function(e)
+    {
+      e.preventDefault();
+      MovementsHandler.editMovement($(this).data().accountId
+        , $(this).data().movementId);
+    });
+    
+    // Submit movement
+    $('#frm_movement').on('submit', function(e)
+    {
+      e.preventDefault();
+      MovementsHandler.saveMovement();
+    });
+        
     // Assign "mousewheel" event to scroll movement lists
     $('.movements_list').live('mousewheel', function(e, delta, delta_x, delta_y)
     {
@@ -183,6 +220,77 @@ var MovementsHandler = new (function()
     });
   };
   
+  /**
+   * Sends movement data to save into database
+   */
+  this.saveMovement = function()
+  {
+    Quark.ajax('home/ajax-save-movement', {
+      data: $('#frm_movement').serialize(),
+      beforeSend: function(jqXHR, Settings)
+      {
+        $('#btn_save_movement').attr('disabled', 'disabled');
+      },
+      complete: function(jqXHR, text_status)
+      {
+        $('#btn_save_movement').removeAttr('disabled');
+      },
+      success: function(Response, status_text, jqXHR)
+      {
+        
+      }
+    });
+  };
+  
+  /**
+   * Shows the modal dialog of form to edit an account's movement.
+   */
+  this.editMovement = function(account_id, movement_id)
+  {
+    // Movement date default to today.
+    var MovementDate = new Date();
+    
+    // Add the account's name to the title of the modal dialog
+    $('#movement_account_name').text(
+      $('#account_' + account_id + '_name').text()
+    );
+    
+    if(movement_id == null){
+      // for add a new movement just clean the form
+      $('#frm_movement').trigger('reset');
+    } else {
+      // get the "data-json" from the movement to fill the form
+      var Movement = $('#movement_' + movement_id).data().json;
+      var $MovementTypeRadios = $('input:radio[name=movement_type]');
+      
+      // The date comes in "yyyy-mm-dd hh:mm:ss" format, we need only
+      // the "yyyy-mm-dd" part, so we split it.
+      MovementDate = $.datepicker.parseDate('yy-mm-dd', Movement.date.split(' ')[0]);
+      $('#movement_id').val(Movement.id);
+      $('#movement_amount').val(Movement.amount);
+      $('#movement_concept').val(Movement.concept);
+      $MovementTypeRadios.removeAttr('checked');
+      if(Movement.type == 1){
+        $MovementTypeRadios[0].checked = true;
+      } else {
+        $MovementTypeRadios[1].checked = true;
+      }
+    }
+        
+    // The form always need the account's id.
+    $('#movement_account_id').val(account_id);
+    
+    // Set date int the datepicker
+    $('#movement_date_gui').datepicker('setDate', MovementDate);
+    
+    // Show modal and focus amount field
+    $('#modal_edit_movement').modal('show');
+    $('#movement_amount').focus();
+  };
+  
+  /**
+   * Request the delete of a movement.
+   */
   this.deleteMovement = function(CallerBtn)
   {
     var $Btn = $(CallerBtn);
@@ -190,6 +298,7 @@ var MovementsHandler = new (function()
     if( !$Btn.data('locked') ){
       var movement_id = $Btn.data('movement-id');
       var $Movement = $('#movement_' + movement_id);
+      
       Quark.ajax('home/ajax-delete-movement', {
         data: {
           'movement_id': movement_id
@@ -253,7 +362,8 @@ var MovementsHandler = new (function()
           // Update movement type in DOM
           $('#movement_' + movement_id).removeClass('in out').addClass(
             Response.result.type == 1 ? 'in' : 'out'
-          );
+          ).data().json.type = Response.result.type;
+          
           // Update total amounts
           AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
         }
@@ -314,4 +424,3 @@ var MovementsHandler = new (function()
   }
   
 })();
-

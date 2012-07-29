@@ -26,6 +26,51 @@ class HomeController extends BaseController
   }
 
   /**
+   * Insert or update a movement into database
+   */
+  public function ajaxSaveMovement()
+  {
+    $_POST['movement_concept'] = trim($_POST['movement_concept']);
+    settype($_POST['movement_amount'], 'float');
+    settype($_POST['movement_id'], 'int');
+    
+    if($_POST['movement_concept'] == '' || $_POST['movement_amount'] == 0){
+      $this->setAjaxResponse(null, 'El formulario tiene datos inválidos', true);
+    } else {
+      try {
+        if($_POST['movement_id'] == 0){
+          $MovementORM = new MovementORM();
+          $MovementORM->users_id    = $this->UserData->id;
+          $MovementORM->accounts_id = $_POST['movement_account_id'];
+        } else {
+          // find movement to edit
+          $MovementORM = MovementORM::query()->findOne()
+            ->where('`id`=:movement_id AND `accounts_id`=:account_id', array(
+              ':movement_id' => $_POST['movement_id'],
+              ':account_id'  => $_POST['movement_account_id']
+            ))
+            ->puff();
+        }
+        
+        if(!$MovementORM){
+          $this->setAjaxResponse(null, 'Movimiento no encontrado', true);
+        } else {
+          // Update movement and save
+          $MovementORM->amount = $_POST['movement_amount'];
+          $MovementORM->concept = $_POST['movement_concept'];
+          $MovementORM->type = $_POST['movement_type'];
+          // Append time to the date
+          $MovementORM->date = $_POST['movement_date'] . ' ' . date('H:i:s');
+          $MovementORM->save();
+        }
+        
+      } catch (QuarkORMException $e) {
+        $this->setAjaxResponse(null, 'No se pudo guardar el movimiento', true);
+      }
+    }
+  }
+
+  /**
    * Delete the movement specified by $_POST['movement_id']
    */
   public function ajaxDeleteMovement()
