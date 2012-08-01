@@ -27,6 +27,11 @@ class AccountORM extends QuarkORM
     return true;
   }
 
+  
+  /*
+   * Le static methods
+    = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  
   /**
    * Return a QuarkORMQueryBuilder instance prepared to run queries on the table
    * related to this object.
@@ -37,10 +42,6 @@ class AccountORM extends QuarkORM
   {
     return new QuarkORMQueryBuilder(__CLASS__);
   }
-  
-  /*
-   * Le static methods
-    = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       
   /**
    * Returns accounts for user specified for the given ID

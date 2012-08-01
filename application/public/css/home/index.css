@@ -52,6 +52,7 @@
   float: left;
   margin: 18px 1px 0 1px;
   width: 468px;
+  overflow: hidden;
 }
 
 .account_header{

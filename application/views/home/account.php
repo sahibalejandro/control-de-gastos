@@ -1,4 +1,5 @@
-<div id="account_<?php echo $AccountORM->id; ?>" class="account">
+<div id="account_<?php echo $AccountORM->id; ?>" class="account"
+  data-json="<?php echo $this->QuarkStr->esc(json_encode($AccountORM)); ?>">
   <div class="account_header"
     style="background-color: #<?php echo $AccountORM->color; ?>;">
     <div class="btn-group pull-right">
@@ -6,11 +7,13 @@
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-pencil"></i> Editar...</a></li>
+        <li><a href="#" class="btn_edit_account"
+          data-account-id="<?php echo $AccountORM->id; ?>"><i class="icon-pencil"></i> Editar...</a></li>
         <li><a href="#" class="btn_new_movement"
           data-account-id="<?php echo $AccountORM->id; ?>">
           <i class="icon-plus-sign"></i> Nuevo movimiento...</a></li>
-        <li><a href="#"><i class="icon-trash"></i> Borrar cuenta</a></li>
+        <li><a href="#" class="btn_delete_account"
+          data-account-id="<?php echo $AccountORM->id; ?>"><i class="icon-trash"></i> Borrar cuenta</a></li>
       </ul>
     </div>
     <h4>

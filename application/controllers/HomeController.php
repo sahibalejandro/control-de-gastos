@@ -24,6 +24,27 @@ class HomeController extends BaseController
       'user_accounts' => AccountORM::getUserAccounts($this->UserData->id)
     ));
   }
+  
+  /**
+   * Delete an account specified by the ID in $_POST['account_id']
+   */
+  public function ajaxDeleteAccount()
+  {
+    try {
+      $rows_count = AccountORM::query()->delete()
+        ->where(array(
+          'users_id' => $this->UserData->id,
+          'id' => $_POST['account_id']))
+        ->puff();
+      if ($rows_count == 0) {
+        $this->setAjaxResponse(null, 'No se borró ningúna cuenta', true);
+      } else {
+        $this->setAjaxResponse(null, 'La cuenta ha sido borrada');
+      }
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo borrar la cuenta', true);
+    }
+  }
 
   /**
    * Insert or update a movement into database
@@ -62,6 +83,14 @@ class HomeController extends BaseController
           // Append time to the date
           $MovementORM->date = $_POST['movement_date'] . ' ' . date('H:i:s');
           $MovementORM->save();
+          
+          // Returns the movement's html render to update the DOM
+          $this->setAjaxResponse(array(
+            'movement_html' => $this->renderView('home/movement.php', array(
+              'MovementORM' => $MovementORM
+            ), true),
+            'total_amounts' => $this->getUserTotalAmounts()
+          ));
         }
         
       } catch (QuarkORMException $e) {
@@ -161,48 +190,80 @@ class HomeController extends BaseController
   }
   
   /**
-   * Add new account to signed user
+   * Save an account into database, can be a new account or existing account
+   * if is an existing account then 'account_init_amount' is ignored.
    */
-  public function ajaxAddAccount()
+  public function ajaxSaveAccount()
   {
     $_POST['account_name'] = trim($_POST['account_name']);
     settype($_POST['account_init_amount'], 'float');
-    if($_POST['account_name'] == ''
-      || $_POST['account_init_amount'] < 1){
-      $this->setAjaxResponse(null
-        , 'Especifica el nombre de la cuenta y un monto inicial', true);
+    
+    if ($_POST['account_name'] == '') {
+      $this->setAjaxResponse(null, 'Especifica el nombre de la cuenta', true);
+    } elseif ($_POST['account_id'] == 0 && $_POST['account_init_amount'] < 1) {
+      $this->setAjaxResponse(null, 'Especifica un monto incial válido', true);
     } else {
       try {
         
-        // Create new account
-        $AccountORM = new AccountORM();
-        $AccountORM->name     = $_POST['account_name'];
-        $AccountORM->color    = $_POST['account_color'];
-        $AccountORM->users_id = $this->UserData->id;
-        $AccountORM->save();
+        if ($_POST['account_id'] == 0) {
+          // Create new account and bind to the actual user
+          $AccountORM = new AccountORM();
+          $AccountORM->users_id = $this->UserData->id;
+        } else {
+          // Get account to edit
+          $AccountORM = AccountORM::query()->findOne()
+            ->where(array(
+              'users_id' => $this->UserData->id,
+              'id' => $_POST['account_id']
+            ))->puff();
+        }
         
-        // Add initial movement to new account
-        $MovementORM = new MovementORM();
-        $MovementORM->amount = $_POST['account_init_amount'];
-        $MovementORM->setParent($AccountORM);
-        $MovementORM->users_id = $this->UserData->id;
-        $MovementORM->type = 1;
-        $MovementORM->concept = 'Monto inicial';
-        $MovementORM->save();
-        
-        // Get account HTML render
-        $account_html = $this->renderView('home/account.php'
-          , array('AccountORM' => $AccountORM), true);
-        
-        // Return HTML render and message
-        $this->setAjaxResponse(array(
-          'account_html' => $account_html,
-          // Add total amounts to update DOM
-          'total_amounts' => $this->getUserTotalAmounts()
-          ), 'Cuenta "'.$_POST['account_name'].'" creada.');
-        
+        if (!$AccountORM) {
+          $this->setAjaxResponse(null, 'No existe la cuenta', true);
+        } else {
+          // Set account data
+          $AccountORM->name     = $_POST['account_name'];
+          $AccountORM->color    = $_POST['account_color'];
+          $AccountORM->save();
+          
+          // Add initial movement to new account
+          if ($_POST['account_id'] == 0) {
+            $MovementORM = new MovementORM();
+            $MovementORM->amount = $_POST['account_init_amount'];
+            $MovementORM->setParent($AccountORM);
+            $MovementORM->users_id = $this->UserData->id;
+            $MovementORM->type = 1;
+            $MovementORM->concept = 'Monto inicial';
+            $MovementORM->save();
+            unset($MovementORM); // Useless
+          }
+          
+          // Only if is a new account render will be created, else then just returs
+          // account's json object to update the DOM.
+          $account_html = null;
+          $account_json = null;
+          
+          if ($_POST['account_id'] != 0) {
+            $account_json = json_encode($AccountORM);
+          } else {
+            $account_html = $this->renderView(
+              'home/account.php',
+              array('AccountORM' => $AccountORM),
+              true
+            );
+          }
+          
+          // Return HTML render (or json) and message
+          $this->setAjaxResponse(array(
+            'account_html' => $account_html,
+            'account_json' => $account_json,
+            
+            // Add total amounts to update DOM
+            'total_amounts' => $this->getUserTotalAmounts()
+            ), 'Cuenta "'.$_POST['account_name'].'" guardada.');
+        }
       } catch (QuarkORMException $e) {
-        $this->setAjaxResponse(null, 'No se pudo agregar la nueva cuenta', true);
+        $this->setAjaxResponse(null, 'No se pudo guardar la nueva cuenta', true);
       }
     }
   }
