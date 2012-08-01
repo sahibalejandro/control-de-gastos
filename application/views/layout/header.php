@@ -20,7 +20,8 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" class="brand">Control de gastos</a>
+        <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" id="brand"
+          class="brand" title="Control de gastos BETA">Control de gastos <div id="beta_icon">Beta</div></a>
         <?php if( $this->QuarkSess->getAccessLevel() == 0 ):
           $this->appendJsFiles('layout/login.js');
         ?>

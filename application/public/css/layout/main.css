@@ -10,6 +10,22 @@ body{
   text-align: center;
 }
 
+#brand{
+  position: relative;
+  padding-right: 35px;
+}
+
+#beta_icon{
+  background-image: url(../../img/beta.png);
+  overflow: hidden;
+  position: absolute;
+  top: 4px;
+  right: 0;
+  text-indent: 100%;
+  width: 32px;
+  height: 32px;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * BEGIN: Login form styles
  */
