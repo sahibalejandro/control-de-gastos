@@ -6,9 +6,9 @@
   <!-- BEGIN: Footer = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
   <div id="footer">
     Control de gastos&copy; Sahib Alejandro Jaramillo Leo 2012
-    &bull; <a href="">Términos y condiciones</a>
-    &bull; <a href="">Ayuda</a>
-    &bull; <a href="">Contacto</a>
+    &bull; <a href="<?php echo $this->QuarkURL->getURL('terminos-y-condiciones'); ?>">Términos y condiciones</a>
+    &bull; <a href="<?php echo $this->QuarkURL->getURL('ayuda'); ?>">Ayuda</a>
+    &bull; <a href="<?php echo $this->QuarkURL->getURL('contacto'); ?>">Contacto</a>
   </div>
   <!-- END: Footer = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 </body>
