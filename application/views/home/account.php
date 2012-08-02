@@ -7,11 +7,11 @@
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a href="#" class="btn_edit_account"
-          data-account-id="<?php echo $AccountORM->id; ?>"><i class="icon-pencil"></i> Editar...</a></li>
         <li><a href="#" class="btn_new_movement"
           data-account-id="<?php echo $AccountORM->id; ?>">
           <i class="icon-plus-sign"></i> Nuevo movimiento...</a></li>
+        <li><a href="#" class="btn_edit_account"
+          data-account-id="<?php echo $AccountORM->id; ?>"><i class="icon-pencil"></i> Editar...</a></li>
         <li><a href="#" class="btn_delete_account"
           data-account-id="<?php echo $AccountORM->id; ?>"><i class="icon-trash"></i> Borrar cuenta</a></li>
       </ul>

@@ -19,6 +19,22 @@ $this->appendCssFiles(
 </ul>
 <!-- END: Accounts actiosn nav = = = = = = = = = = = = = = = = = = = = = = = = = -->
 
+<!-- BEGIN: User total amounts = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<div class="row">
+  <div id="total_amount_total_label" class="span4">Total:</div>
+  <div id="total_amount_payments_label" class="span4">Pagos por realizar:</div>
+  <div id="total_amount_available_label" class="span4">Disponible:</div>
+</div>
+<div class="row">
+  <div id="total_amount_total" class="span4"><?php
+    echo $total_amounts['total_formated']; ?></div>
+  <div id="total_amount_payments" class="span4"><?php
+    echo $total_amounts['payments_formated']; ?></div>
+  <div id="total_amount_available" class="span4"><?php
+    echo $total_amounts['available_formated']; ?></div>
+</div>
+<!-- END: User total amounts = = = = = = = = = = = = = = = = = = = = = = = = = -->
+
 <!-- BEGIN: Edit account modal dialog = = = = = = = = = = = = = = = = = = = = = = -->
 <div class="modal hide" id="modal_edit_account">
   <form action="javascript:;" id="frm_edit_account" class="form-horizontal">
@@ -34,7 +50,7 @@ $this->appendCssFiles(
             <label for="account_name" class="control-label">Nombre:</label>
             <div class="controls">
               <input type="text" name="account_name" id="account_name"
-                class="input-xlarge" required="required" value="">
+                class="input-xlarge" required="required" autocomplete="off" value="">
             </div>
           </div>
           <div id="edit_account_init_amount" class="control-group">
@@ -43,7 +59,7 @@ $this->appendCssFiles(
             <div class="controls">
               <div class="input-prepend">
                 <span class="add-on">$</span><input type="text" name="account_init_amount" id="account_init_amount"
-                class="span2" required="required" value="1.00">
+                class="span2" required="required" autocomplete="off" value="1.00">
               </div>
             </div>
           </div>
@@ -93,7 +109,7 @@ $this->appendCssFiles(
             <div class="input-prepend">
               <span class="add-on">$</span><input type="text"
                 name="movement_amount" id="movement_amount" class="span2"
-                required="required">
+                required="required" autocomplete="off">
             </div>
           </div>
         </div>
@@ -117,7 +133,7 @@ $this->appendCssFiles(
         <div class="control-group">
           <label for="movement_concept" class="control-label">Concepto:</label>
           <div class="controls">
-            <input type="text" class="input-xlarge" name="movement_concept" id="movement_concept" required="required">
+            <input type="text" class="input-xlarge" name="movement_concept" id="movement_concept" required="required" autocomplete="off">
           </div>
         </div>
         

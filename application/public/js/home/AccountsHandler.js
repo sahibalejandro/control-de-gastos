@@ -83,6 +83,8 @@ var AccountsHandler = new (function()
         $('#modal_delete_account').modal('hide');
         // Remove account and show message
         $('#account_' + _ACCOUNT_ID).remove();
+        // Update total amounts
+        AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
         Main.alert(Response.message);
       }
     });
@@ -156,11 +158,13 @@ var AccountsHandler = new (function()
   };
   
   /**
-   * TODO: Implement this method
+   * Update the DOM to show total amounts
    */
   this.updateTotalAmounts = function(TotalAmounts)
   {
-    console.log('TODO: Update total amounts with ', TotalAmounts);
+    $('#total_amount_total').text(TotalAmounts.total_formated);
+    $('#total_amount_payments').text(TotalAmounts.payments_formated);
+    $('#total_amount_available').text(TotalAmounts.available_formated);
   }
   
   /**

@@ -21,6 +21,7 @@ class HomeController extends BaseController
   {
     // Render view with user accounts
     $this->setPageTitle('Mis cuentas')->renderView(null, array(
+      'total_amounts' => $this->getUserTotalAmounts(),
       'user_accounts' => AccountORM::getUserAccounts($this->UserData->id)
     ));
   }
@@ -39,7 +40,9 @@ class HomeController extends BaseController
       if ($rows_count == 0) {
         $this->setAjaxResponse(null, 'No se borró ningúna cuenta', true);
       } else {
-        $this->setAjaxResponse(null, 'La cuenta ha sido borrada');
+        $this->setAjaxResponse(
+          array('total_amounts' => $this->getUserTotalAmounts()),
+          'La cuenta ha sido borrada');
       }
     } catch (QuarkORMException $e) {
       $this->setAjaxResponse(null, 'No se pudo borrar la cuenta', true);
@@ -268,13 +271,49 @@ class HomeController extends BaseController
     }
   }
   
+  /**
+   * Calculate and returns the user total amounts for
+   * "total", "payments" and "available"
+   * 
+   * @return array
+   */
   protected function getUserTotalAmounts()
   {
-    return array(
-      'total' => 0,
-      'payments' => 0,
+    $total_amounts = array(
+      'total'     => 0,
+      'payments'  => 0,
       'available' => 0
     );
+    
+    // Total is equal to all IN movements minus all OUT movements
+    $total_amounts['total'] = MovementORM::query()->sum('amount')
+      ->where(array(
+        'users_id' => $this->UserData->id,
+        'type' => 1
+      ))->puff()->amount - MovementORM::query()->sum('amount')
+      ->where(array(
+        'users_id' => $this->UserData->id,
+        'type' => 0
+      ))->puff()->amount;
+    
+    // Payments is equal to SUM all payment's amounts
+    $total_amounts['payments'] = PaymentORM::query()->sum('amount')
+      ->where(array('users_id' => $this->UserData->id))
+      ->puff()->amount;
+      
+    // Available is total minus payments OMFG!
+    $total_amounts['available']
+      = $total_amounts['total'] - $total_amounts['payments'];
+      
+    // Now format numbers to not javascript it.
+    $total_amounts['total_formated']
+      = '$'. number_format($total_amounts['total'], 2);
+    $total_amounts['payments_formated']
+      = '$'. number_format($total_amounts['payments'], 2);
+    $total_amounts['available_formated']
+      = '$'. number_format($total_amounts['available'], 2);
+      
+    return $total_amounts;
   }
   
   /**

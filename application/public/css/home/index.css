@@ -1,4 +1,52 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * BEGIN: Total amounts bar
+ */
+#total_amount_total_label,
+#total_amount_payments_label,
+#total_amount_available_label,
+#total_amount_total,
+#total_amount_payments,
+#total_amount_available {
+  color: #FFF;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 28px;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+#total_amount_total_label,
+#total_amount_payments_label,
+#total_amount_available_label{
+  border-radius: 10px 10px 0 0;
+}
+
+#total_amount_total,
+#total_amount_payments,
+#total_amount_available {
+  border-radius: 0 0 10px 10px;
+}
+
+#total_amount_total_label,
+#total_amount_total{
+  background-color: #49AFCD;
+}
+
+#total_amount_payments_label,
+#total_amount_payments{
+  background-color: #FAA732;
+}
+
+#total_amount_available_label,
+#total_amount_available{
+  background-color: #5BB75B;
+}
+
+/*
+ * END: Total amounts bar
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * BEGIN: Color selector styles
  */
 .btn_color_selector{
