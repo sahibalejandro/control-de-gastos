@@ -27,6 +27,28 @@ class HomeController extends BaseController
   }
   
   /**
+   * Get all user's payments and send it through ajax response
+   */
+  public function ajaxLoadPayments()
+  {
+    try {
+      $payments = array();
+      foreach (PaymentORM::query()->select('id', 'amount', 'concept')
+        ->where(array('users_id' => $this->UserData->id))
+        ->order('id', 'ASC')
+        ->puff() as $Payment
+      ) {
+        $Payment->amount_formated = '$' . number_format($Payment->amount, 2);
+        $payments[] = $Payment;
+      }
+      
+      $this->setAjaxResponse($payments);
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo obtener la lista de pagos', true);
+    }
+  }
+  
+  /**
    * Delete an account specified by the ID in $_POST['account_id']
    */
   public function ajaxDeleteAccount()

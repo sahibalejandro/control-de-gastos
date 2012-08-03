@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * BEGIN: Total amounts bar
  */
+ 
 #total_amount_total_label,
 #total_amount_payments_label,
 #total_amount_available_label,
@@ -44,6 +45,49 @@
 
 /*
  * END: Total amounts bar
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * BEGIN: Payments bar
+ */
+
+#payments_bar{
+  margin-top: 16px;
+}
+
+.payment{
+  float: left;
+  margin: 1px;
+  width: 200px;
+}
+
+.payment_header{
+  background-color: #EEE;
+  border-radius: 8px 8px 0 0;
+  padding: 0 4px;
+}
+
+.payment_concept{
+  float: left;
+  line-height: 24px;
+  width: 150px;
+}
+
+.payment .btn-group{
+  display: none;
+  float: right;
+  margin-top: 2px;
+}
+
+.payment_amount{
+  background-color: #DDD;
+  border-radius: 0 0 8px 8px;
+  line-height: 24px;
+  text-align: center;
+}
+
+/*
+ * END: Payments bar
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

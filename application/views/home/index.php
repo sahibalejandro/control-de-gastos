@@ -35,6 +35,10 @@ $this->appendCssFiles(
 </div>
 <!-- END: User total amounts = = = = = = = = = = = = = = = = = = = = = = = = = -->
 
+<div id="payments_bar" class="clearfix">
+  <!-- payments are inserted here -->
+</div>
+
 <!-- BEGIN: Edit account modal dialog = = = = = = = = = = = = = = = = = = = = = = -->
 <div class="modal hide" id="modal_edit_account">
   <form action="javascript:;" id="frm_edit_account" class="form-horizontal">
@@ -202,6 +206,8 @@ $this->appendJsFiles(
   'lib/jquery.mousewheel.js',
   'home/AccountsHandler.js',
   'home/MovementsHandler.js',
+  'home/PaymentObj.js',
+  'home/PaymentsHandler.js',
   'home/index.js')
   ->renderView('layout/footer.php');
 ?>

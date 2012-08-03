@@ -11,4 +11,7 @@ $(document).on('ready', function(e)
   
   // Initialize movements handler
   MovementsHandler.init();
+  
+  // Initialize payments handler
+  PaymentsHandler.init();
 });
