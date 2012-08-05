@@ -125,8 +125,6 @@ class QuarkORMEngine{
       $St->execute($arguments);
       return $St;
     } catch( PDOException $PDOException ) {
-      // Log error message
-      Quark::log('QuarkORMEngine::query(): '.$PDOException->getMessage());
       throw new QuarkORMException(
         'PDOException: '. $PDOException->getMessage()
         , QuarkORMException::ERR_PDO_EXCEPTION
