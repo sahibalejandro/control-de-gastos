@@ -256,7 +256,7 @@ $this->appendCssFiles(
       </fieldset>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-success" type="submit">Guardar</button>
+      <button id="btn_save_payment" class="btn btn-success" type="submit">Guardar</button>
       <button class="btn" type="button" data-dismiss="modal">Cerrar</button>
     </div>
   </form>

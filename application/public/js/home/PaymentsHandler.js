@@ -25,6 +25,7 @@ var PaymentsHandler = new (function ()
       var Payment;
       var payment_id = $('#payment_id').val();
       var is_new = false;
+      var $BtnSave = $('#btn_save_payment');
       
       if (payment_id > 0) {
         // Get payment object to update
@@ -41,38 +42,49 @@ var PaymentsHandler = new (function ()
       Payment.data.amount  = $('#payment_amount').val();
       
       // Save payment
-      Payment.save(
-        // Success callback
-        function (PaymentData)
+      Payment.save({
+        beforeSend: function ()
+        {
+          $BtnSave.attr('disabled', 'disabled');
+        },
+        complete: function ()
+        {
+          $BtnSave.removeAttr('disabled');
+        },
+        success: function (Response)
         {
           // Hide modal
           PaymentsHandler.hideModalPayment();
           // Update DOM
           if (!is_new) {
-            PaymentsHandler.refreshDOM(PaymentData.id);
+            PaymentsHandler.refreshDOM(Response.payment.id);
           } else {
             // Insert new payment in payments list.
-            payments[PaymentData.id] = new PaymentObj(PaymentData);
-            PaymentsHandler.insertInDOM(PaymentData.id);
+            payments[Response.payment.id] = new PaymentObj(Response.payment);
+            PaymentsHandler.insertInDOM(Response.payment.id);
           }
+          
+          // Update total amounts
+          AccountsHandler.updateTotalAmounts(Response.total_amounts)
         },
-        
-        // Fail callback
-        function (QuarkAJAXResponse)
+        fail: function (QuarkAJAXResponse)
         {
           // Hide modal
           PaymentsHandler.hideModalPayment();
           // Show error message
           Main.alert(QuarkAJAXResponse.message);
-        });
+        }
+      });
     });
 
     // On submit payment to pay
     $('#frm_pay_payment').on('submit', function (e)
     {
-      var $BtnPay = $('#btn_pay');
-      
       e.preventDefault();
+      
+      var $BtnPay = $('#btn_pay');
+      console.log($BtnPay);
+      
       Quark.ajax('home/ajax-pay-payment', {
         data: $(this).serialize(),
         beforeSend: function(jqXHR, Settings)
@@ -90,10 +102,11 @@ var PaymentsHandler = new (function ()
           
           // Update DOM
           PaymentsHandler.refreshDOM(Response.result.payment.id);
-          AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
           // Insert new movement in the account list
           $('#account_' + $('#pay_account_id').val()).find('.movements_list').prepend(Response.result.movement_html);
           
+          // Update total amounts
+          AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
           // Hide modal dialog
           $('#modal_pay_payment').modal('hide');
         }
@@ -129,10 +142,12 @@ var PaymentsHandler = new (function ()
   {
     payments[payment_id].delete(
       // Success callback
-      function ()
+      function (TotalAmounts)
       {
         // Remove payment from DOM
         $('#payment_' + payment_id).remove();
+        // Update total amounts
+        AccountsHandler.updateTotalAmounts(TotalAmounts);
       },
       // Fail callback
       function (QuarkAJAXResponse)

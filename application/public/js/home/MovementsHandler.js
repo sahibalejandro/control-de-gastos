@@ -193,7 +193,7 @@ var MovementsHandler = new (function()
       'backdrop': 'static',
       'keyboard': false
     });
-    $('#movement_amount').focus();
+    $('#movement_concept').focus();
   };
   
   /**

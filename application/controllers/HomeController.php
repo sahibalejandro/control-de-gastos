@@ -5,6 +5,9 @@ class HomeController extends BaseController
   {
     parent::__construct();
     
+    // DEBUG: Simulate network loading
+    // sleep(2);
+    
     // Set public access to methods
     $this->setActionsAccessLevel(array(
       'ajaxSignup' => 0,
@@ -26,6 +29,9 @@ class HomeController extends BaseController
     ));
   }
   
+  /**
+   * Pay a payment creating a movement in an account specified
+   */
   public function ajaxPayPayment()
   {
     // Sanitize data
@@ -116,7 +122,10 @@ class HomeController extends BaseController
       if ($rows_count == 0) {
         $this->setAjaxResponse(null, 'No se borro ningún pago', true);
       } else {
-        $this->setAjaxResponse(null, 'Pago eliminado');
+        // Return total amounts to update client's GUI
+        $this->setAjaxResponse(array(
+          'total_amounts' => $this->getUserTotalAmounts()
+        ), 'Pago eliminado');
       }
     } catch (QuarkORMException $e) {
       $this->setAjaxResponse(null, 'No se pudo borrar el bago', true);
@@ -156,8 +165,12 @@ class HomeController extends BaseController
         $Payment->concept = trim($_POST['concept']);
         $Payment->save();
         
-        // Return payment data to client.
-        $this->setAjaxResponse($Payment->getArrayForAJAX(),
+        // Return payment data and total amounts.
+        $this->setAjaxResponse(
+          array(
+            'payment' => $Payment->getArrayForAJAX(),
+            'total_amounts' => $this->getUserTotalAmounts()
+          ),
           'Pago actualizado'
         );
       }
