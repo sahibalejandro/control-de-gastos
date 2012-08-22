@@ -6,59 +6,6 @@ var PaymentsHandler = new (function ()
   var payments = [];
   
   /**
-   * Delete a payment object calling their own delete method and removing from DOM
-   * on success.
-   */
-  this.delete = function (payment_id)
-  {
-    payments[payment_id].delete(
-      // Success callback
-      function ()
-      {
-        // Remove payment from DOM
-        $('#payment_' + payment_id).remove();
-      },
-      // Fail callback
-      function (QuarkAJAXResponse)
-      {
-        Main.alert(QuarkAJAXResponse.message);
-      });
-  };
-  
-  /**
-   * Update an existing ".payment" element with data from the payment object
-   * specified by the id "payment_id"
-   */
-  this.refreshDOM = function (payment_id)
-  {
-    var $Payment = $('#payment_' + payment_id);
-    $Payment.find('.payment_concept').text(payments[payment_id].data.concept);
-    $Payment.find('.payment_amount').text(payments[payment_id].data.amount_formated);
-  };
-  
-  this.showModalPayment = function (payment_id)
-  {
-    if (payment_id == null) {
-      // Reset form to add new payment
-      $('#frm_payment').trigger('reset');
-      // hidden inputs don't reset?
-      $('#payment_id').val(0);
-    } else {
-      // Load payment data to fill form
-      $('#payment_id').val(payment_id);
-      $('#payment_concept').val(payments[payment_id].data.concept);
-      $('#payment_amount').val(payments[payment_id].data.amount);
-    }
-    
-    // Show modal and focus payment concept field
-    $('#modal_payment').modal({
-      'backdrop': 'static',
-      'keyboard': false
-    });
-    $('#payment_concept').focus();
-  };
-  
-  /**
    * Initialize payments engine
    */
   this.init = function ()
@@ -119,6 +66,39 @@ var PaymentsHandler = new (function ()
           Main.alert(QuarkAJAXResponse.message);
         });
     });
+
+    // On submit payment to pay
+    $('#frm_pay_payment').on('submit', function (e)
+    {
+      var $BtnPay = $('#btn_pay');
+      
+      e.preventDefault();
+      Quark.ajax('home/ajax-pay-payment', {
+        data: $(this).serialize(),
+        beforeSend: function(jqXHR, Settings)
+        {
+          $BtnPay.attr('disabled', 'disabled');
+        },
+        complete: function(jqXHR, text_status)
+        {
+          $BtnPay.removeAttr('disabled');
+        },
+        success: function(Response, status_text, jqXHR)
+        {
+          // Update payments
+          payments[Response.result.payment.id].data = Response.result.payment;
+          
+          // Update DOM
+          PaymentsHandler.refreshDOM(Response.result.payment.id);
+          AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
+          // Insert new movement in the account list
+          $('#account_' + $('#pay_account_id').val()).find('.movements_list').prepend(Response.result.movement_html);
+          
+          // Hide modal dialog
+          $('#modal_pay_payment').modal('hide');
+        }
+      });
+    });
     
     // Load all payments
     Quark.ajax('home/ajax-load-payments', {
@@ -134,6 +114,80 @@ var PaymentsHandler = new (function ()
           // Insert payment in DOM
           PaymentsHandler.insertInDOM(Payment.data.id);
         }
+      }
+    });
+    
+    // Fill accounts list to pay payments.
+    PaymentsHandler.loadAccountsList();
+  };
+  
+  /**
+   * Delete a payment object calling their own delete method and removing from DOM
+   * on success.
+   */
+  this.delete = function (payment_id)
+  {
+    payments[payment_id].delete(
+      // Success callback
+      function ()
+      {
+        // Remove payment from DOM
+        $('#payment_' + payment_id).remove();
+      },
+      // Fail callback
+      function (QuarkAJAXResponse)
+      {
+        Main.alert(QuarkAJAXResponse.message);
+      });
+  };
+  
+  /**
+   * Update an existing ".payment" element with data from the payment object
+   * specified by the id "payment_id"
+   */
+  this.refreshDOM = function (payment_id)
+  {
+    var $Payment = $('#payment_' + payment_id);
+    $Payment.find('.payment_concept').text(payments[payment_id].data.concept);
+    $Payment.find('.payment_amount').text(payments[payment_id].data.amount_formated);
+  };
+  
+  this.showModalPayment = function (payment_id)
+  {
+    if (payment_id == null) {
+      // Reset form to add new payment
+      $('#frm_payment').trigger('reset');
+      // hidden inputs don't reset?
+      $('#payment_id').val(0);
+    } else {
+      // Load payment data to fill form
+      $('#payment_id').val(payment_id);
+      $('#payment_concept').val(payments[payment_id].data.concept);
+      $('#payment_amount').val(payments[payment_id].data.amount);
+    }
+    
+    // Show modal and focus payment concept field
+    $('#modal_payment').modal({
+      'backdrop': 'static',
+      'keyboard': false
+    });
+    $('#payment_concept').focus();
+  };
+  
+  /**
+   * Loads accounts list from server and fill the select list
+   * in #modal_pay_payment
+   */
+  this.loadAccountsList = function ()
+  {
+    var $SelectList = $('#pay_account_id');
+    AccountsHandler.loadAccountsList(function (accounts_list)
+    {
+      $SelectList.empty();
+      for (i in accounts_list) {
+        $SelectList.append(
+          $('<option>').val(accounts_list[i].id).text(accounts_list[i].name)
+        );
       }
     });
   }
@@ -164,7 +218,7 @@ var PaymentsHandler = new (function ()
     var $MenuItemPay = $('<li>');
     var $MenuItemPayBtn = $('<a>').attr('href', '#').append(
       $('<i>').addClass('icon-ok'),
-      ' Pagar'
+      ' Pagar con...'
     );
     
     var $MenuItemEdit = $('<li>');
@@ -196,7 +250,7 @@ var PaymentsHandler = new (function ()
     $MenuItemPayBtn.on('click', function (e)
     {
       e.preventDefault();
-      console.log('Pay: ', payment_id);
+      PaymentsHandler.showModalPayWith(payment_id);
     });
     
     // Edit button
@@ -238,6 +292,30 @@ var PaymentsHandler = new (function ()
     this.refreshDOM(payment_id);
   };
   
+  /**
+   * Show modal to select an account and pay a payment.
+   */
+  this.showModalPayWith = function (payment_id)
+  {
+    // Display payment name in modal dialog
+    $('#payment_to_pay_name').text(payments[payment_id].data.concept);
+    
+    // Display payment amount in modal dialog
+    $('#payment_to_pay_amount').text(payments[payment_id].data.amount_formated);
+    
+    // Set the payment's ID
+    $('#payment_to_pay_id').val(payment_id);
+    
+    // Show modal dialog
+    $('#modal_pay_payment').modal({
+      'backdrop': 'static',
+      'keyboard': false
+    });
+  };
+  
+  /**
+   * Hide the payment's modal dialog
+   */
   this.hideModalPayment = function ()
   {
     $('#modal_payment').modal('hide');

@@ -92,6 +92,34 @@ $this->appendCssFiles(
 </div>
 <!-- END: Edit account modal dialog = = = = = = = = = = = = = = = = = = = = = = = -->
 
+<!-- BEGIN: Select "account to pay" modal dialog = = = = = = = = = = = = = = = = -->
+<div id="modal_pay_payment" class="modal hide">
+  <form action="javascript:;" id="frm_pay_payment" class="form-vertical">
+    <input type="hidden" name="payment_to_pay_id" id="payment_to_pay_id" value="0">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h3>Pagar: <span id="payment_to_pay_name"></span> </h3>
+    </div>
+    <div class="modal-body">
+      <fieldset>
+        <div class="control-group">
+          <label for="account" class="control-label">
+            Se cargará un monto de <span id="payment_to_pay_amount"></span> en la cuenta:
+          </label>
+          <div class="controls">
+            <select name="pay_account_id" id="pay_account_id"></select>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" id="btn_pay" class="btn btn-success">Pagar</button>
+      <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+    </div>
+  </form>
+</div>
+<!-- END: Select "account to pay" modal dialog = = = = = = = = = = = = = = = = = -->
+
 <!-- BEGIN: Edit movement modal dialog = = = = = = = = = = = = = = = = = = = = = -->
 <div id="modal_edit_movement" class="modal hide">
   <form action="javascript:;" id="frm_movement" class="form-horizontal">

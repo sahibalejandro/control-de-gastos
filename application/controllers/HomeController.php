@@ -26,6 +26,79 @@ class HomeController extends BaseController
     ));
   }
   
+  public function ajaxPayPayment()
+  {
+    // Sanitize data
+    settype($_POST['payment_to_pay_id'], 'int');
+    settype($_POST['pay_account_id'], 'int');
+    
+    try{
+      // Check if payment and account belongs to signed user
+      $PaymentORM = PaymentORM::query()->findOne()
+        ->where(array(
+          'id' => $_POST['payment_to_pay_id'],
+          'users_id' => $this->UserData->id
+        ))
+        ->puff();
+        
+      $AccountORM = AccountORM::query()->findOne()
+        ->where(array(
+          'id' => $_POST['pay_account_id'],
+          'users_id' => $this->UserData->id
+        ))
+        ->puff();
+        
+      if (!$PaymentORM || !$AccountORM) {
+        $this->setAjaxResponse(null, 'El pago o la cuenta no existen', true);
+      } else {
+        // Create new movement in the account
+        $MovementORM = new MovementORM();
+        $MovementORM->users_id = $this->UserData->id;
+        $MovementORM->accounts_id = $_POST['pay_account_id'];
+        $MovementORM->amount = $PaymentORM->amount;
+        $MovementORM->type = 0;
+        $MovementORM->concept = 'Pago de: '.$PaymentORM->concept;
+        $MovementORM->save();
+        
+        // Update the payment amount to 0 (cero)
+        $PaymentORM->amount = 0;
+        $PaymentORM->save();
+        
+        // Return the updated payment data, movement render and new total amounts
+        $this->setAjaxResponse(array(
+          'total_amounts' => $this->getUserTotalAmounts(),
+          'payment' => $PaymentORM->getArrayForAJAX(),
+          'movement_html' => $this->renderView(
+            'home/movement.php',
+            array('MovementORM' => $MovementORM),
+            true
+          )
+        ),
+        'Pago realizado');
+      }
+        
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo realizar el pago', true);
+    }
+  }
+  
+  /**
+   * Load user's accounts list (just "id" and "name" fields for now).
+   */
+  public function ajaxLoadAccountsList()
+  {
+    try {
+      $this->setAjaxResponse(
+        AccountORM::query()->select('id', 'name')
+          ->where(array('users_id' => $this->UserData->id))
+          ->order('name', 'asc')
+          ->puff()
+      );
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo cargar la lista de cuentas', true);
+    }
+  }
+  
   /**
    * Delete a payment
    */

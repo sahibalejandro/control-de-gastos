@@ -59,6 +59,19 @@ var AccountsHandler = new (function()
   };
   
   /**
+   * Load accounts from server and send the list to callback function
+   */
+  this.loadAccountsList = function (callback)
+  {
+    Quark.ajax('home/ajax-load-accounts-list', {
+      success: function(Response, status_text, jqXHR)
+      {
+        callback(Response.result);
+      }
+    });
+  }
+  
+  /**
    * Sends a request to delete tha account specified by the id _ACCOUNT_ID
    */
   this.deleteAccount = function()
@@ -85,6 +98,8 @@ var AccountsHandler = new (function()
         $('#account_' + _ACCOUNT_ID).remove();
         // Update total amounts
         AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
+        // Reload accounts list in pay payment modal
+        PaymentsHandler.loadAccountsList();
         Main.alert(Response.message);
       }
     });
@@ -150,6 +165,9 @@ var AccountsHandler = new (function()
         
         // Hide modal dialog
         $('#modal_edit_account').modal('hide');
+        
+        // Reload accounts list in pay payment modal
+        PaymentsHandler.loadAccountsList();
         
         // Show message
         Main.alert(Response.message);
