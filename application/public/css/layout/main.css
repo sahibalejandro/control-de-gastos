@@ -50,6 +50,11 @@ ul#login_dropdown li form{
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * BEGIN: Bootstrap fixes
+ */
+
+h1, h2, h3, h4, h5, h6{
+  margin: 0;
+} 
 
 /* No bottom margin in last .control-group inside modals */
 .modal form .control-group:last-child{
