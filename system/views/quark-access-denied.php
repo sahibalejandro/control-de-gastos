@@ -1,5 +1,5 @@
 <!--
-Quark 3.5 PHP Framework
+QuarkPHP Framework
 Copyright (C) 2012 Sahib Alejandro Jaramillo Leo
 
 http://quarkphp.com
@@ -16,7 +16,7 @@ GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 <h1>Acceso denegado!</h1>
 Lo siento, no tienes los permisos para ver la pagina.
 <ul>
-	<li><a href="<?php echo $this->QuarkURL->getBaseURL()?>">Regresar al inicio</a></li>
+  <li><a href="<?php echo $this->QuarkURL->getBaseURL()?>">Regresar al inicio</a></li>
 </ul>
 </body>
 </html>

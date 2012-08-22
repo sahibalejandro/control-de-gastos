@@ -1,6 +1,6 @@
 <?php
 /**
- * Quark 3.5 PHP Framework
+ * QuarkPHP Framework
  * Copyright (C) 2012 Sahib Alejandro Jaramillo Leo
  * 
  * @link http://quarkphp.com
@@ -200,7 +200,16 @@ class QuarkImage
 
         if($image_copied && $crop){
           $img_crop = imagecreatetruecolor($max_w, $max_h);
-          $image_copied = imagecopy($img_crop, $img_dst, 0, 0, $src_x, $src_y, $max_w, $max_h);
+          $image_copied = imagecopy(
+            $img_crop,
+            $img_dst,
+            0,
+            0,
+            $src_x,
+            $src_y,
+            $max_w,
+            $max_h
+          );
           imagedestroy($img_dst);
           $img_dst = $img_crop;
         }
