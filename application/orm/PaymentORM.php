@@ -14,6 +14,20 @@ class PaymentORM extends QuarkORM
   public static $connection = 'default';
   
   /**
+   * Returns the payment data in an array for ajax requests.
+   * @return array(id, amount, concept, amount_formated)
+   */
+  public function getArrayForAJAX()
+  {
+    return array(
+      'id'              => $this->id,
+      'amount'          => $this->amount,
+      'concept'         => $this->concept,
+      'amount_formated' => '$'.number_format($this->amount, 2)
+    );
+  }
+  
+  /**
    * To validate your data before save to database
    *
    * @return boolean

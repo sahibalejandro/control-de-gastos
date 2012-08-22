@@ -7,28 +7,24 @@ function PaymentObj(Data)
   // See "HomeController::ajaxLoadPayments()" to know the fields list.
   this.data = Data;
   
-  // Object events
-  var Events = {
-    onSave: function (RowData)
-    {
-      console.log('Payment with id ' + RowData.id + ' saved!');
-    },
-    onFail: function (fail_reason)
-    {
-      throw 'Fail to save payment with id ' + RowData.id;
-    }
-  };
-  
+  /**
+   * Is true while ajax loading
+   */
   var ajax_loading = false;
   
   /**
-   * Make an ajax request to save the payment data into database
+   * To access from inside ajax events.
    */
-  this.save = function ()
+  var _this = this;
+  
+  /**
+   * Make an ajax request to delete the payment from database
+   */
+  this.delete = function(success_callback, fail_callback)
   {
     if (!ajax_loading) {
-      Quark.ajax('home/ajax-save-payment', {
-        data: RowData,
+      Quark.ajax('home/ajax-delete-payment', {
+        data: {'payment_id': this.data.id},
         beforeSend: function(jqXHR, Settings)
         {
           ajax_loading = true;
@@ -39,13 +35,45 @@ function PaymentObj(Data)
         },
         success: function(Response, status_text, jqXHR)
         {
-          // Refresh row fields with updated data
-          RowData = Response.result;
-          Events.onSave(RowData);
+          success_callback();
         },
         fail: function(Response, status_text, jqXHR)
         {
-          Events.onFail(Response.message);
+          fail_callback(Response);
+        }
+      });
+    }
+  }
+  
+  /**
+   * Make an ajax request to save the payment data into database
+   */
+  this.save = function (success_callback, fail_callback)
+  {
+    if (!ajax_loading) {
+      Quark.ajax('home/ajax-save-payment', {
+        data: {
+          'id': this.data.id,
+          'amount': this.data.amount,
+          'concept': this.data.concept
+        },
+        beforeSend: function (jqXHR, Settings)
+        {
+          ajax_loading = true;
+        },
+        complete: function (jqXHR, text_status)
+        {
+          ajax_loading = false;
+        },
+        success: function (Response, status_text, jqXHR)
+        {
+          // Refresh row fields with updated data
+          _this.data = Response.result;
+          success_callback(_this.data);
+        },
+        fail: function (Response, status_text, jqXHR)
+        {
+          fail_callback(Response);
         }
       });
     }

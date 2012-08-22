@@ -105,6 +105,15 @@ $this->appendCssFiles(
     <div class="modal-body">
       <fieldset>
         
+        <!-- Movement concept -->
+        
+        <div class="control-group">
+          <label for="movement_concept" class="control-label">Concepto:</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" name="movement_concept" id="movement_concept" required="required" autocomplete="off">
+          </div>
+        </div>
+        
         <!-- Movement amount -->
         
         <div class="control-group">
@@ -129,15 +138,6 @@ $this->appendCssFiles(
               <span class="add-on"><i class="icon-calendar"></i></span><input
                 type="text" id="movement_date_gui" class="span2">
             </div>
-          </div>
-        </div>
-        
-        <!-- Movement concept -->
-        
-        <div class="control-group">
-          <label for="movement_concept" class="control-label">Concepto:</label>
-          <div class="controls">
-            <input type="text" class="input-xlarge" name="movement_concept" id="movement_concept" required="required" autocomplete="off">
           </div>
         </div>
         
@@ -190,6 +190,50 @@ $this->appendCssFiles(
   </div>
 </div>
 <!-- END: Delete account confirm dialog = = = = = = = = = = = = = = = = = = = = = -->
+
+<!-- BEGIN: Dialog to edit payment = = = = = = = = = = = = = = = = = = = = = = = -->
+<div id="modal_payment" class="modal hide">
+  <form id="frm_payment" class="form-horizontal" action="javascript:;">
+    <input type="hidden" name="payment_id" id="payment_id" value="0">
+    <div class="modal-header">
+      <a href="#" class="close" data-dismiss="modal">&times;</a>
+      <h3>Editar pago</h3>
+    </div>
+    <div class="modal-body">
+      <fieldset>
+        
+        <!-- Payment concept -->
+        
+        <div class="control-group">
+          <label class="control-label" for="payment_concept">Concepto:</label>
+          <div class="controls">
+            <input type="text" name="payment_concept" id="payment_concept"
+              required="required" value="">
+          </div>
+        </div>
+        
+        <!-- Payment amount -->
+        
+        <div class="control-group">
+          <label class="control-label" for="payment_amount">Monto:</label>
+          <div class="controls">
+            <div class="input-prepend">
+              <span class="add-on">$</span><input type="text"
+                name="payment_amount" id="payment_amount"
+                class="span2" required="required" value="1.00">
+            </div>
+          </div>
+        </div>
+        
+      </fieldset>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" type="submit">Guardar</button>
+      <button class="btn" type="button" data-dismiss="modal">Cerrar</button>
+    </div>
+  </form>
+</div>
+<!-- END: Dialog to edit payment = = = = = = = = = = = = = = = = = = = = = = = = -->
 
 <!-- BEGIN: Accounts list = = = = = = = = = = = = = = = = = = = = = = = = = = =  -->
 <div id="accounts_list" class="clearfix"><?php

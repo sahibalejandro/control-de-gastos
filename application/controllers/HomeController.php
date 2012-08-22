@@ -27,19 +27,85 @@ class HomeController extends BaseController
   }
   
   /**
+   * Delete a payment
+   */
+  public function ajaxDeletePayment()
+  {
+    try {
+      $rows_count = PaymentORM::query()
+        ->delete()
+        ->where(array(
+          'id' => $_POST['payment_id'],
+          'users_id' => $this->UserData->id
+        ))
+        ->puff();
+      
+      if ($rows_count == 0) {
+        $this->setAjaxResponse(null, 'No se borro ningún pago', true);
+      } else {
+        $this->setAjaxResponse(null, 'Pago eliminado');
+      }
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo borrar el bago', true);
+    }
+  }
+  
+  /**
+   * Save payment data from $_POST
+   */
+  public function ajaxSavePayment()
+  {
+    // Sanitize input data
+    settype($_POST['id'], 'int');
+    settype($_POST['amount'], 'float');
+    
+    try {
+      // Create new payment or get existent payment
+      if ($_POST['id'] == 0) {
+        // Create new payment
+        $Payment = new PaymentORM();
+        $Payment->users_id = $this->UserData->id;
+      } else {
+        // Get existent payment
+        $Payment = PaymentORM::query()->findOne()
+        ->where(array(
+          'id' => $_POST['id'],
+          'users_id' => $this->UserData->id
+        ))
+        ->puff();
+      }
+      
+      // Update payment data if exists.
+      if ($Payment == false) {
+        $this->setAjaxResponse(null, 'Pago no encontrado', true);
+      } else {
+        $Payment->amount = $_POST['amount'];
+        $Payment->concept = trim($_POST['concept']);
+        $Payment->save();
+        
+        // Return payment data to client.
+        $this->setAjaxResponse($Payment->getArrayForAJAX(),
+          'Pago actualizado'
+        );
+      }
+    } catch (QuarkORMException $e) {
+      $this->setAjaxResponse(null, 'No se pudo guardar el pago', true);
+    }
+  }
+  
+  /**
    * Get all user's payments and send it through ajax response
    */
   public function ajaxLoadPayments()
   {
     try {
       $payments = array();
-      foreach (PaymentORM::query()->select('id', 'amount', 'concept')
+      foreach (PaymentORM::query()->find()
         ->where(array('users_id' => $this->UserData->id))
         ->order('id', 'ASC')
         ->puff() as $Payment
       ) {
-        $Payment->amount_formated = '$' . number_format($Payment->amount, 2);
-        $payments[] = $Payment;
+        $payments[] = $Payment->getArrayForAJAX();
       }
       
       $this->setAjaxResponse($payments);
