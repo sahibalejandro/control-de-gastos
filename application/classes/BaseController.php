@@ -28,11 +28,15 @@ class BaseController extends QuarkController
   
   /**
    * Create and return a PHPMailer object pre-configured to send email.
+   * 
+   * @deprecated
    * @param string $subject EMail subject
    * @return PHPMailer
    */
   protected function getPHPMailer($subject)
   {
+    return null;
+    
     require_once QUARK_APP_PATH . '/includes/phpmailer/class.phpmailer.php';
     /*
      * TODO: Change SMTP values to connect to production server.
@@ -69,7 +73,34 @@ class BaseController extends QuarkController
     if(QUARK_AJAX){
       $this->setAjaxAccessDenied();
     } else {
-      $this->renderView('layout/signup.php');
+      $auth_url    = null;
+      $twitter_err = false;
+      $TwitterAPI  = $this->getTwitterAPI();
+      
+      try {
+        $auth_url = $TwitterAPI->getAuthenticationURL(
+          $this->QuarkURL->getURL('home/check-authentication')
+        );
+      } catch (TwitterAPIException $e) {
+        $twitter_err = $e->getMessage();
+        Quark::log($twitter_err);
+      }
+      
+      $this->renderView('layout/signup.php', array(
+        'auth_url'    => $auth_url,
+        'twitter_err' => $twitter_err
+      ));
     }
+  }
+  
+  /**
+   * Returns the TwitterAPI object prepared with your own app's token
+   */
+  protected function getTwitterAPI()
+  {
+    return new TwitterAPI(
+      'Fcqdt9RwHUxMgI3Yk4kxqg',
+      'LGfZGv9G8FV8u1iCUkhcLOhezp5Pilf5LROJIdwPhI'
+    );
   }
 }

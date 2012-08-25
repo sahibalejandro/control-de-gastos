@@ -1,0 +1,10 @@
+#btn_signin{
+  background-image: url(../../img/btn-signin-twitter.png);
+  display: block;
+  margin: 100px auto;
+  overflow: hidden;
+  text-indent: 100%;
+  width: 278px;
+  height: 58px;
+  white-space: nowrap;
+}
