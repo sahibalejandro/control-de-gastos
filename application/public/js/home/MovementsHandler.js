@@ -136,6 +136,10 @@ var MovementsHandler = new (function()
         
         // Update user's total amounts
         AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
+        AccountsHandler.updateAccountAmount(
+          $('#movement_account_id').val(),
+          Response.result.account_amount
+        );
         
         // Hide movement modal
         $('#modal_edit_movement').modal('hide');
@@ -237,6 +241,11 @@ var MovementsHandler = new (function()
           });
           // Update total amounts
           AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
+          // Update account amount
+          AccountsHandler.updateAccountAmount(
+            Response.result.account_id,
+            Response.result.account_amount
+          );
         }
       });
     }
@@ -274,6 +283,12 @@ var MovementsHandler = new (function()
           
           // Update total amounts
           AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
+          
+          // Update account amount
+          AccountsHandler.updateAccountAmount(
+            Response.result.account_id,
+            Response.result.account_amount
+          );
         }
       });
     }

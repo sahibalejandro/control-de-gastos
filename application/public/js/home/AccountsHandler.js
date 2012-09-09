@@ -185,6 +185,11 @@ var AccountsHandler = new (function()
     $('#total_amount_available').text(TotalAmounts.available_formated);
   }
   
+  this.updateAccountAmount = function(account_id, amount)
+  {
+    $('.account_amount', '#account_' + account_id).text(amount);
+  }
+  
   /**
    * Shows add account modal dialog
    */

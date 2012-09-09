@@ -27,7 +27,6 @@ class AccountORM extends QuarkORM
     return true;
   }
 
-  
   /*
    * Le static methods
     = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

@@ -65,9 +65,17 @@ class HomeController extends BaseController
         
         // Return the updated payment data, movement render and new total amounts
         $this->setAjaxResponse(array(
-          'total_amounts' => $this->getUserTotalAmounts(),
-          'payment' => $PaymentORM->getArrayForAJAX(),
-          'movement_html' => $this->renderView(
+          // Total amounts data
+          'total_amounts'  => $this->getUserTotalAmounts(),
+          // Formatted account amount
+          'account_amount' => '$'. number_format(
+            $this->getAccountAmount($MovementORM->accounts_id),
+            2
+          ),
+          // Payment data
+          'payment'        => $PaymentORM->getArrayForAJAX(),
+          // Movement render
+          'movement_html'  => $this->renderView(
             'home/movement.php',
             array('MovementORM' => $MovementORM),
             true
@@ -259,7 +267,11 @@ class HomeController extends BaseController
             'movement_html' => $this->renderView('home/movement.php', array(
               'MovementORM' => $MovementORM
             ), true),
-            'total_amounts' => $this->getUserTotalAmounts()
+            // Total amounts for update DOM
+            'total_amounts' => $this->getUserTotalAmounts(),
+            // Account's new amount to update DOM
+            'account_amount' => '$'. number_format(
+              $this->getAccountAmount($_POST['movement_account_id']), 2)
           ));
         }
         
@@ -275,15 +287,24 @@ class HomeController extends BaseController
   public function ajaxDeleteMovement()
   {
     try {
-      MovementORM::query()->delete()
+      $MovementORM = MovementORM::query()->findOne()
         ->where('`id` = :movement_id AND `users_id` = :user_id', array(
           ':movement_id' => $_POST['movement_id'],
           ':user_id' => $this->UserData->id
         ))
         ->puff();
-      // Send total amounts updated
+      
+      $MovementORM->delete();
+      
       $this->setAjaxResponse(array(
-        'total_amounts' => $this->getUserTotalAmounts()
+        // Send total amounts updated
+        'total_amounts' => $this->getUserTotalAmounts(),
+        // Send account amount
+        'account_id'     => $MovementORM->accounts_id,
+        'account_amount' => '$'. number_format(
+          $this->getAccountAmount($MovementORM->accounts_id),
+          2
+        )
       ));
     } catch (QuarkORMException $e) {
       $this->setAjaxResponse(null, 'No se pudo borrar el movimiento', true);
@@ -312,7 +333,13 @@ class HomeController extends BaseController
         $this->setAjaxResponse(array(
           'type' => $MovementORM->type,
           // Add total user amounts to update DOM
-          'total_amounts' => $this->getUserTotalAmounts()
+          'total_amounts' => $this->getUserTotalAmounts(),
+          // Add account amount to update DOM
+          'account_id' => $MovementORM->accounts_id,
+          'account_amount' => '$'. number_format(
+            $this->getAccountAmount($MovementORM->accounts_id),
+            2
+          )
         ));
       }
     } catch (QuarkORMException $e) {
@@ -436,6 +463,34 @@ class HomeController extends BaseController
         $this->setAjaxResponse(null, 'No se pudo guardar la nueva cuenta', true);
       }
     }
+  }
+  
+  /**
+   * Return the total amount avaiable in the account specified by the ID $account_id
+   * @param int $account_id Account ID
+   * @return int
+   */
+  protected function getAccountAmount($account_id)
+  {
+    $MovementsIn = MovementORM::query()
+      ->sum('amount')
+      ->where(array(
+        'users_id' => $this->UserData->id,
+        'accounts_id' => $account_id,
+        'type' => 1
+      ))
+      ->exec();
+    
+    $MovementsOut = MovementORM::query()
+      ->sum('amount')
+      ->where(array(
+        'users_id' => $this->UserData->id,
+        'accounts_id' => $account_id,
+        'type' => 0
+      ))
+      ->exec();
+      
+    return $MovementsIn->amount - $MovementsOut->amount;
   }
   
   /**

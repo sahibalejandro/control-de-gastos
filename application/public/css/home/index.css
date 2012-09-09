@@ -58,7 +58,7 @@
 .payment{
   float: left;
   margin: 1px;
-  width: 200px;
+  width: 186px;
 }
 
 .payment_header{
@@ -157,6 +157,16 @@
   line-height: 36px;
   padding: 0 0 0 18px;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+}
+
+.account_header h3{
+  color: #FFF;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 0 50px 0 0;
+  text-align: right;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+  padding: 0 0 8px 0;
 }
 
 .account_header .btn-group{

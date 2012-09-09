@@ -83,7 +83,6 @@ var PaymentsHandler = new (function ()
       e.preventDefault();
       
       var $BtnPay = $('#btn_pay');
-      console.log($BtnPay);
       
       Quark.ajax('home/ajax-pay-payment', {
         data: $(this).serialize(),
@@ -97,16 +96,24 @@ var PaymentsHandler = new (function ()
         },
         success: function(Response, status_text, jqXHR)
         {
+          var account_id = $('#pay_account_id').val();
           // Update payments
           payments[Response.result.payment.id].data = Response.result.payment;
           
           // Update DOM
           PaymentsHandler.refreshDOM(Response.result.payment.id);
           // Insert new movement in the account list
-          $('#account_' + $('#pay_account_id').val()).find('.movements_list').prepend(Response.result.movement_html);
+          $('#account_' + account_id).find('.movements_list').prepend(Response.result.movement_html);
           
           // Update total amounts
           AccountsHandler.updateTotalAmounts(Response.result.total_amounts);
+          
+          // Update account amount
+          AccountsHandler.updateAccountAmount(
+            account_id,
+            Response.result.account_amount
+          );
+          
           // Hide modal dialog
           $('#modal_pay_payment').modal('hide');
         }
@@ -258,6 +265,9 @@ var PaymentsHandler = new (function ()
       $BtnGroup.show();
     }).on('mouseleave', function (e)
     {
+      if ($DropdownMenu.is(':visible')) {
+        $BtnDropdown.trigger('click');
+      }
       $BtnGroup.hide();
     });
     

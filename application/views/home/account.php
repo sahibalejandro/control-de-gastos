@@ -21,6 +21,9 @@
         echo $this->QuarkStr->esc($AccountORM->name);
       ?></span>
     </h4>
+    <h3>Disponible: <span class="account_amount">$<?php
+      echo number_format($this->getAccountAmount($AccountORM->id), 2);
+    ?></span></h3>
   </div>
   <div class="account_body">
     <div class="movements_list"><?php
