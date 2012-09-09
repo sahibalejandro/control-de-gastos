@@ -11,7 +11,7 @@
   </title>
   <?php
   $this
-    ->prependCssFiles('layout/bootstrap.css', 'layout/main.css')
+    ->prependCssFiles('layout/bootstrap.min.css', 'layout/main.css')
     ->includeCssFiles();
   ?>
 </head>

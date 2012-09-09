@@ -1,5 +1,5 @@
   <?php
-  $this->prependJsFiles('layout/bootstrap.js', 'layout/main.js')->includeJsFiles();
+  $this->prependJsFiles('layout/bootstrap.min.js', 'layout/main.js')->includeJsFiles();
   ?>
   </div>
   <!-- END: Main container = = = = = = = = = = = = = = = = = = = = = = = = = = -->
