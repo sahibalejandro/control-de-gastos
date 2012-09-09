@@ -208,7 +208,7 @@ var AccountsHandler = new (function()
       // Show initial amount layout, maybe was hidden.
       $('#edit_account_init_amount').show();
       // Select default color
-      $('.btn_color_selector:first', '#account_color_selectors').trigger('click');
+      //$('.btn_color_selector:first', '#account_color_selectors').trigger('click');
     } else {
       var Account = $('#account_' + account_id).data().json;
       $('#edit_account_name').text(': ' + Account.name);
@@ -216,10 +216,10 @@ var AccountsHandler = new (function()
       // Initial amount is not needed when editing an account
       $('#edit_account_init_amount').hide();
       // Select account's color
-      $(
+      /*$(
         '.btn_color_selector[data-color=' + Account.color + ']',
         '#account_color_selectors'
-      ).trigger('click');
+      ).trigger('click');*/
     }
     
     // Account's ID is always set

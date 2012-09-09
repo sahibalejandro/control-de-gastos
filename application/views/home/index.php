@@ -4,8 +4,9 @@ $this->appendCssFiles(
   ->renderView('layout/header.php');
 ?>
 <!-- BEGIN: Accounts actiosn nav = = = = = = = = = = = = = = = = = = = = = = = = -->
-<ul class="nav nav-pills">
-  <li class="dropdown"><a href="#" class="dropdown-toggle"
+<div class="btn-toolbar">
+<div class="btn-group">
+<a href="#" class="btn dropdown-toggle"
     data-toggle="dropdown">Nuevo <span class="caret"></span></a>
     <ul class="dropdown-menu">
       <li><a href="#" id="btn_add_account">
@@ -15,8 +16,9 @@ $this->appendCssFiles(
         <i class="icon-flag"></i> Nuevo pago...</a>
       </li>
     </ul>
-  </li>
-</ul>
+</div>
+</div>
+
 <!-- END: Accounts actiosn nav = = = = = = = = = = = = = = = = = = = = = = = = = -->
 
 <!-- BEGIN: User total amounts = = = = = = = = = = = = = = = = = = = = = = = = = -->

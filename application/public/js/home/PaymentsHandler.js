@@ -174,8 +174,17 @@ var PaymentsHandler = new (function ()
     $Payment.find('.payment_amount').text(payments[payment_id].data.amount_formated);
   };
   
+  /**
+   * Show modal dialog to edit a payment
+   */
   this.showModalPayment = function (payment_id)
   {
+    // Show modal
+    $('#modal_payment').modal({
+      'backdrop': 'static',
+      'keyboard': false
+    });
+    
     if (payment_id == null) {
       // Reset form to add new payment
       $('#frm_payment').trigger('reset');
@@ -188,11 +197,7 @@ var PaymentsHandler = new (function ()
       $('#payment_amount').val(payments[payment_id].data.amount);
     }
     
-    // Show modal and focus payment concept field
-    $('#modal_payment').modal({
-      'backdrop': 'static',
-      'keyboard': false
-    });
+    // focus payment concept field
     $('#payment_concept').focus();
   };
   
