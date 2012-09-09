@@ -27,35 +27,6 @@ class BaseController extends QuarkController
   }
   
   /**
-   * Create and return a PHPMailer object pre-configured to send email.
-   * 
-   * @deprecated
-   * @param string $subject EMail subject
-   * @return PHPMailer
-   */
-  protected function getPHPMailer($subject)
-  {
-    return null;
-    
-    require_once QUARK_APP_PATH . '/includes/phpmailer/class.phpmailer.php';
-    /*
-     * TODO: Change SMTP values to connect to production server.
-     */
-    $Mail = new PHPMailer();
-    $Mail->IsSMTP();
-    $Mail->Host     = 'mail.vivalaweba.com';
-    $Mail->SMTPAuth = true;
-    $Mail->Port     = 26;
-    $Mail->Username = 'admin+vivalaweba.com';
-    $Mail->Password = '^7EN9J;Zfdp8L_z4Gz';
-    $Mail->Subject  = $subject;
-    $Mail->AltBody  = 'Para ver este mensaje usa un lector de correo compatible con HTML';
-    $Mail->SetFrom('admin@vivalaweba.com', 'Control de gastos');
-    $Mail->AddReplyTo('admin@vivalaweba.com', 'Control de gastos');
-    return $Mail;
-  }
-  
-  /**
    * Set page title for view "layout/header.php"
    */
   protected function setPageTitle($page_title)
@@ -99,8 +70,8 @@ class BaseController extends QuarkController
   protected function getTwitterAPI()
   {
     return new TwitterAPI(
-      'Fcqdt9RwHUxMgI3Yk4kxqg',
-      'LGfZGv9G8FV8u1iCUkhcLOhezp5Pilf5LROJIdwPhI'
+      '2NzGW2zJ0cJjBEuAUAjuIg',
+      'b1MkQf72L5HIW39AVEskisbalHlOyyao3WYe8fPbLY'
     );
   }
 }

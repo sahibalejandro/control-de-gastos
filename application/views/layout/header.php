@@ -7,7 +7,7 @@
     if(!empty($this->page_title)):
       echo $this->QuarkStr->esc($this->page_title), ' - ';
     endif;
-    ?>Control de gastos
+    ?>gassto
   </title>
   <?php
   $this
@@ -21,7 +21,7 @@
     <div class="navbar-inner">
       <div class="container">
         <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" id="brand"
-          class="brand" title="Control de gastos BETA">Control de gastos <div id="beta_icon">Beta</div></a>
+          class="brand" title="gassto BETA">gassto <div id="beta_icon">Beta</div></a>
         <?php if( $this->QuarkSess->getAccessLevel() > 0 ): ?>
         <!-- BEGIN: User nav bar = = = = = = = = = = = = = = = = = = = = = = = = -->
         <ul class="nav pull-right">
