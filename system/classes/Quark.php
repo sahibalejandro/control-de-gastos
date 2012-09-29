@@ -35,29 +35,39 @@ class Quark
   {
     ini_set('display_errors', 1);
 
-    define('QUARK_VERSION', '3.5.1');
+    define('QUARK_VERSION', '3.5.2');
     define('QUARK_PHP_MIN_VERSION', '5.1');
 
     /* --------------------------------------------------
      * Validar versión minima de PHP 5.1
      */
     if (version_compare(PHP_VERSION, QUARK_PHP_MIN_VERSION) < 0) {
-      die('Quark necesita <b>PHP ' . QUARK_PHP_MIN_VERSION .
-        '</b> o mayor.<br />Versión actual de PHP: <b>' . PHP_VERSION.
-        '</b>');
-      exit();
+      header('Content-Type: text/plain');
+      die('Sorry, QuarkPHP needs PHP version '. QUARK_PHP_MIN_VERSION
+        . ' or higher, your current PHP version is '. PHP_VERSION
+      );
     }
 
     /* --------------------------------------------------
      * Autoload classes
      */
-    function __autoload($class_name)
+    function quarkphp_autoload($class_name)
     {
       foreach (Quark::getConfigVal('class_paths') as $path) {
         if (is_file("$path/$class_name.php")) {
           require "$path/$class_name.php";
           break;
         }
+      }
+    }
+    
+    // Use SPL Autload if is available
+    if (function_exists('spl_autoload_register')) {
+      spl_autoload_register('quarkphp_autoload');
+    } else {
+      function __autoload($class_name)
+      {
+        quarkphp_autoload($class_name);
       }
     }
 
