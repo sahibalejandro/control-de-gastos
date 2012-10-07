@@ -64,10 +64,15 @@ class MovementORM extends QuarkORM
       self::$connection
     );
 
-    /** Return array of DateTime objects */    
+    /** Return array of DateTime objects */
+    function create_DateTime($date)
+    {
+      return new DateTime($date);
+    };
+    
     return $PDOSt->fetchAll(
       PDO::FETCH_FUNC,
-      create_function('$date', 'return new DateTime($date);')
+      'create_DateTime'
     );
   }
   
