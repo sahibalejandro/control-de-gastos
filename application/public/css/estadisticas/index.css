@@ -1,0 +1,10 @@
+#min_date_gui,
+#max_date_gui {
+  cursor: pointer;
+}
+
+#chart {
+  border: 1px solid #ccc;
+  width: 938px;
+  height: 478px;
+}

@@ -41,7 +41,46 @@ class AccountORM extends QuarkORM
   {
     return new QuarkORMQueryBuilder(__CLASS__);
   }
-      
+  
+  /**
+   * @return float
+   */
+  public static function getTotalAmountAtDate(
+    $account_id,
+    DateTime $Date,
+    DateTime $MinDate = null
+  ) {
+    
+    if ($MinDate == null) {
+      /**
+       * TODO:
+       * Get min date of account's movements.
+       */
+      $MinDate = new DateTime('2012-01-01');
+    }
+    
+    $sql = 'SELECT
+      (SELECT IFNULL(SUM(`amount`), 0)
+        FROM `movements`
+        WHERE (`accounts_id` = :account_id AND `type` = 1)
+          AND (DATE(`date`) BETWEEN :min_date AND :max_date))
+      -
+      (SELECT IFNULL(SUM(`amount`), 0)
+        FROM `movements`
+        WHERE (`accounts_id` = :account_id AND `type` = 0)
+          AND (DATE(`date`) BETWEEN :min_date AND :max_date)) AS `total_amount`';
+
+    return (float)QuarkORMEngine::query(
+        $sql,
+        array(
+          ':account_id' => $account_id,
+          ':min_date' => $MinDate->format('Y-m-d'),
+          ':max_date' => $Date->format('Y-m-d'),
+        ),
+        self::$connection
+      )->fetchColumn(0);
+  }
+   
   /**
    * Returns accounts for user specified for the given ID
    * @return array(AccountORM)

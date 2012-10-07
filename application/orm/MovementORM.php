@@ -39,6 +39,39 @@ class MovementORM extends QuarkORM
   }
   
   /**
+   * Returns an array of DateTime objects, with the dates where there movements
+   * by the user specified by $user_id, dates are unique (group by date).
+   * 
+   * @param int $user_id User's ID
+   * @param array $accounts_id Array with accounts IDs to filter by.
+   * @return array(DateTime)
+   */
+  public static function getKeyDates($user_id, $accounts_id = null)
+  {
+    $sql = 'SELECT DATE(`date`) FROM `movements`
+      WHERE `users_id` = :user_id';
+      
+    // Add accounts filter if defined
+    if (is_array($accounts_id)) {
+      $sql .= ' AND `accounts_id` IN ('. implode(',', $accounts_id). ')';
+    }
+      
+    $sql .= ' GROUP BY 1 ORDER BY 1;';
+    
+    $PDOSt = QuarkORMEngine::query(
+      $sql,
+      array(':user_id' => $user_id),
+      self::$connection
+    );
+
+    /** Return array of DateTime objects */    
+    return $PDOSt->fetchAll(
+      PDO::FETCH_FUNC,
+      create_function('$date', 'return new DateTime($date);')
+    );
+  }
+  
+  /**
    * Returns up to 10 movements with a date less than (older than) to the
    * specified bt $max_timestap, from the account specified by
    * $user_id and $account_id
@@ -56,5 +89,20 @@ class MovementORM extends QuarkORM
     }
     
     return $QueryBuilder->limit(10)->order('date', 'DESC')->puff();
+  }
+  
+  /**
+   * Get min date of movements that belongs to the user specified by $user_id
+   * @param int $user_id The user's id
+   * @return DateTime
+   */
+  public static function getMovementsMinDate($user_id)
+  {
+    return new DateTime(self::query()
+      ->min('date')
+      ->where(array('users_id' => $user_id))
+      ->puff()
+      ->date
+    );
   }
 }

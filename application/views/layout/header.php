@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="es-MX">
 <head>
   <meta charset="UTF-8">
@@ -23,6 +23,10 @@
         <a href="<?php echo $this->QuarkURL->getBaseURL(); ?>" id="brand"
           class="brand" title="gassto BETA">gassto <div id="beta_icon">Beta</div></a>
         <?php if( $this->QuarkSess->getAccessLevel() > 0 ): ?>
+        <ul class="nav">
+          <li><a href="<?php echo $this->QuarkURL->getBaseURL(); ?>">Cuentas</a></li>
+          <li><a href="<?php echo $this->QuarkURL->getURL('estadisticas'); ?>">Estadísticas</a></li>
+        </ul>
         <!-- BEGIN: User nav bar = = = = = = = = = = = = = = = = = = = = = = = = -->
         <ul class="nav pull-right">
           <li class="dropdown"><a href="#" class="dropdown-toggle"
