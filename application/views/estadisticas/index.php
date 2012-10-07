@@ -21,8 +21,17 @@ $this
 </select>
 <button id="btn_chart" class="btn btn-success" type="submit">Grafica</button>
 </form>
-<div id="chart"></div>
+<div id="chart">Cargando...</div>
 <?php
+// Send the account ID to JavaScript to auto-load the account chart
+if ($account_id > 0):
+?>
+<script type="text/javascript">var ACCOUNT_ID_AUTOLOAD = <?php
+  echo $account_id;
+?>;</script>
+<?php
+endif;
+
 $this
   ->appendJsFiles(
     'lib/jquery-ui-1.8.22.custom.min.js',

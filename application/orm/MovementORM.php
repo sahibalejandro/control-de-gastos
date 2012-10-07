@@ -94,15 +94,17 @@ class MovementORM extends QuarkORM
   /**
    * Get min date of movements that belongs to the user specified by $user_id
    * @param int $user_id The user's id
+   * @param int $account_id Filter by one account if specified
    * @return DateTime
    */
-  public static function getMovementsMinDate($user_id)
+  public static function getMovementsMinDate($user_id, $account_id = 0)
   {
-    return new DateTime(self::query()
-      ->min('date')
-      ->where(array('users_id' => $user_id))
-      ->puff()
-      ->date
-    );
+    $Query = self::query()->min('date')->where(array('users_id' => $user_id));
+    
+    if ($account_id > 0) {
+      $Query->andWhere(array('accounts_id' => $account_id));
+    }
+    
+    return new DateTime($Query->puff()->date);
   }
 }

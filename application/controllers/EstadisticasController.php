@@ -8,10 +8,27 @@ class EstadisticasController extends BaseController
   /**
    * Shows chart GUI
    */
-  public function index()
+  public function index($account_id = 0)
   {
+    // If $account_id is > 0 then verify if the account belongs to the actual user
+    if ($account_id > 0) {
+      if (AccountORM::query()->count()->where(array(
+            'id' => $account_id,
+            'users_id' => $this->UserData->id
+          ))->puff() == 0
+      ) {
+        // Account not belongs to the actual user, fuck him!
+        $account_id = 0;
+      }
+    }
+    
     $this->addViewVars(array(
-      'accounts' => AccountORM::query()->find()->order('name')->puff()
+      'account_id' => $account_id,
+      'accounts'   => AccountORM::query()
+        ->find()
+        ->where(array('users_id' => $this->UserData->id))
+        ->order('name')
+        ->puff()
     ));
     $this->renderView();
   }
@@ -19,12 +36,26 @@ class EstadisticasController extends BaseController
   public function ajaxLoadChartDataTable()
   {
     // Get min date of all user's movements.
-    $MinDate = MovementORM::getMovementsMinDate($this->UserData->id);
+    $MinDate = MovementORM::getMovementsMinDate(
+      $this->UserData->id,
+      $_POST['account_id']
+    );
+    
+    if ($_POST['account_id'] > 0) {
+      $user_accounts_ids = array($_POST['account_id']);
+    } else {
+      $user_accounts_ids = array();
+      $user_accounts = AccountORM::query()
+        ->select('id')
+        ->where(array('users_id' => $this->UserData->id))
+        ->puff();
+      foreach ($user_accounts as $UserAccount) {
+        $user_accounts_ids[] = $UserAccount->id;
+      }
+    }
     
     /** Get key dates of movements in the user's accounts */
-    $key_dates = MovementORM::getKeyDates($this->UserData->id);
-    
-    $user_accounts_ids = array(1, 2);
+    $key_dates = MovementORM::getKeyDates($this->UserData->id, $user_accounts_ids);
     
     $datatable_rows = array();
     $dataable_columns = array(

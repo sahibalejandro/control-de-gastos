@@ -17,8 +17,7 @@ $db_config['default']['charset'] = 'UTF8';
 // ROUTES
 
 $routes = array(
-  // Recover password
-  'recover-password' => 'home/recover-password',
   // Logout
-  'salir' => 'home/logout'
+  'salir' => 'home/logout',
+  'estadisticas/(\d)+' => 'estadisticas/index/$1'
 );

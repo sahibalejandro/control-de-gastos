@@ -66,12 +66,22 @@ var ChartHandler = new (function ()
   /** Flag to know when data table is loading from server */
   var loading_data_table = false;
   
+  var Chart = null;
+  
   /**
    * Called when visualization API is loaded
    */
   function on_load_callback()
   {
     DateSelector.enable(true);
+    
+    if (typeof ACCOUNT_ID_AUTOLOAD == 'undefined') {
+      ChartHandler.loadDataAndDrawChart({'account_id': 0});
+    } else {
+      // Auto-load account's chart
+      $('#account_id').val(ACCOUNT_ID_AUTOLOAD);
+      ChartHandler.loadDataAndDrawChart({'account_id': ACCOUNT_ID_AUTOLOAD});
+    }
   };
   
   /**
@@ -82,6 +92,7 @@ var ChartHandler = new (function ()
     // Load the Visualization API
     google.load('visualization', '1.0', {
       'packages':['corechart'],
+      'language': 'es_mx',
       'callback': on_load_callback
     });
   };
@@ -93,6 +104,19 @@ var ChartHandler = new (function ()
    */
   this.loadDataAndDrawChart = function (Settings)
   {
+    var $BtnChart = $('#btn_chart');
+    
+    /**
+     * Reset text button and enable date selector.
+     * This action can be realized in different circumstances.
+     */
+    function reset_date_selector()
+    {
+      // Reset button text and enable date selector
+      $BtnChart.text('Grafica');
+      DateSelector.enable(true);
+    }
+    
     Quark.ajax('estadisticas/ajax-load-chart-data-table', {
       data: {
         'account_id': Settings.account_id
@@ -103,6 +127,8 @@ var ChartHandler = new (function ()
           return false;
         } else {
           loading_data_table = true;
+          $BtnChart.text('Cargando...');
+          DateSelector.enable(false);
         }
       },
       complete: function(jqXHR, text_status)
@@ -111,6 +137,8 @@ var ChartHandler = new (function ()
       },
       success: function(Response, status_text, jqXHR)
       {
+        $BtnChart.text('Dibujando...');
+        
         var ChartData = new google.visualization.DataTable();
         
         /** Columns */
@@ -124,20 +152,46 @@ var ChartHandler = new (function ()
         /** Rows */
         ChartData.addRows(Response.result.rows);
         
+        new google.visualization.NumberFormat({
+          'prefix': '$',
+        }).format(ChartData, 1);
+        
         /** Chart options */
         var ChartOptions = {
-          'title': 'Cuentas',
+          'title': 'Grafica de movimientos',
           'width': 938,
-          'height': 478
+          'height': 478,
+          'animation':{
+            'duration': 500,
+            'easing': 'out',
+          },
+          'pointSize': 4,
+          'chartArea': {'top': 30, 'left': 80, 'width': 700, 'height': 380}
         };
         
         /** Create chart and draw it */
-        var Chart = new google.visualization.LineChart(document.getElementById('chart'));
+        if (Chart == null) {
+          Chart = new google.visualization.LineChart(
+            document.getElementById('chart')
+          );
+        }
+        
+        google.visualization.events.addListener(Chart, 'ready', function ()
+        {
+          reset_date_selector();
+        });
+        
         Chart.draw(ChartData, ChartOptions);
       },
       fail: function(Response, status_text, jqXHR)
       {
         Main.alert(Response.message);
+        reset_date_selector();
+      },
+      scriptError: function (error)
+      {
+        Quark.getAJAXSettings().scriptError(error);
+        reset_date_selector();
       }
     });
     // end of: Quark.ajax(...);
