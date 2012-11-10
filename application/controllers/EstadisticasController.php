@@ -33,6 +33,13 @@ class EstadisticasController extends BaseController
     $this->renderView();
   }
   
+  /**
+   * Load data for populate the data-tables in javascript, for the Google API,
+   * if $_POST['account_id'] is > 0 then the data-tables belongs just for one
+   * account, else retreieve data-tables for all user's accounts.
+   * If $_POST['account_id'] is "avaiable" then retrieve the data-tables for avaiable
+   * amounts.
+   */
   public function ajaxLoadChartDataTable()
   {
     // Get min date of all user's movements.
@@ -44,11 +51,15 @@ class EstadisticasController extends BaseController
     if ($_POST['account_id'] > 0) {
       $user_accounts_ids = array($_POST['account_id']);
     } else {
-      $user_accounts_ids = array();
+      /* Extract the IDs of user's accounts, and add the account ID 0, to graph
+       * the totals */
+      $user_accounts_ids = array(0);
+      
       $user_accounts = AccountORM::query()
         ->select('id')
         ->where(array('users_id' => $this->UserData->id))
         ->puff();
+        
       foreach ($user_accounts as $UserAccount) {
         $user_accounts_ids[] = $UserAccount->id;
       }
@@ -58,13 +69,17 @@ class EstadisticasController extends BaseController
     $key_dates = MovementORM::getKeyDates($this->UserData->id, $user_accounts_ids);
     
     $datatable_rows = array();
-    $dataable_columns = array(
+    $datatable_columns = array(
       array('string', 'Fecha')
     );
     
     foreach ($user_accounts_ids as $account_id) {
-      $AccountORM = AccountORM::query()->findByPk($account_id);
-      $dataable_columns[] = array('number', $AccountORM->name);
+      if ($account_id == 0) {
+        $datatable_columns[] = array('number', 'Total');
+      } else {
+        $AccountORM = AccountORM::query()->findByPk($account_id);
+        $datatable_columns[] = array('number', $AccountORM->name);
+      }
     }
     
     foreach ($key_dates as $DateTime) {
@@ -73,6 +88,7 @@ class EstadisticasController extends BaseController
       foreach ($user_accounts_ids as $account_id) {
         $row[] = AccountORM::getTotalAmountAtDate(
           $account_id,
+          $this->UserData->id,
           $DateTime,
           $MinDate
         );
@@ -81,7 +97,7 @@ class EstadisticasController extends BaseController
     }
     
     $this->setAjaxResponse(array(
-      'columns' => $dataable_columns,
+      'columns' => $datatable_columns,
       'rows' => $datatable_rows
     ));
   }

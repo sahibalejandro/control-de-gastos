@@ -70,10 +70,7 @@ class MovementORM extends QuarkORM
       return new DateTime($date);
     };
     
-    return $PDOSt->fetchAll(
-      PDO::FETCH_FUNC,
-      'create_DateTime'
-    );
+    return $PDOSt->fetchAll(PDO::FETCH_FUNC, 'create_DateTime');
   }
   
   /**

@@ -12,7 +12,7 @@ $this
 <form id="frm_account_filter" action="javascript:;" class="form-horizontal">
 <label>Filtrar por cuenta:</label>
 <select name="account_id" id="account_id">
-  <option value="0" selected="selected">-- Todas las cuentas --</option>
+  <option value="0" selected="selected">-- Todo --</option>
   <?php foreach ($accounts as $AccountORM): ?>
   <option value="<?php echo $AccountORM->id; ?>"><?php
     echo $this->QuarkStr->esc($AccountORM->name);
